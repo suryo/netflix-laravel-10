@@ -67,6 +67,7 @@
                         <a href="{{ route('home') }}" class="text-sm font-medium {{ request()->routeIs('home') ? 'text-white font-bold' : 'text-gray-300 hover:text-white' }} transition-colors">Home</a>
                         <a href="{{ route('movies.index') }}" class="text-sm font-medium {{ request()->routeIs('movies.index') ? 'text-white font-bold' : 'text-gray-300 hover:text-white' }} transition-colors">Movies</a>
                         <a href="{{ route('tv.index') }}" class="text-sm font-medium {{ request()->routeIs('tv.index') ? 'text-white font-bold' : 'text-gray-300 hover:text-white' }} transition-colors">Tv Series</a>
+                        <a href="{{ route('tv_online.index') }}" class="text-sm font-medium {{ request()->routeIs('tv_online.*') ? 'text-white font-bold' : 'text-gray-300 hover:text-white' }} transition-colors">TV Online</a>
                         
                         @if(Auth::check() && (Auth::user()->role === 'admin' || Auth::user()->is_approved_adult))
                             <a href="{{ route('movies.adult') }}" class="text-sm font-black text-netflix-red hover:text-red-400 transition-all flex items-center gap-1">
@@ -160,6 +161,7 @@
             <div class="px-4 py-4 space-y-3">
                 <a href="{{ route('home') }}" class="block text-sm text-white">Home</a>
                 <a href="{{ route('movies.index') }}" class="block text-sm text-gray-300">Movies</a>
+                <a href="{{ route('tv_online.index') }}" class="block text-sm text-gray-300">TV Online</a>
                 @foreach($navCategories as $cat)
                     <a href="{{ route('movies.category', $cat->slug) }}" class="block text-sm text-gray-400 pl-4">{{ $cat->name }}</a>
                 @endforeach
