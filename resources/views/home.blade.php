@@ -26,6 +26,27 @@
         $sliderItems = $sliders->count() > 0 ? $sliders : ($featured ? collect([$featured]) : collect());
     @endphp
 
+    @auth
+        @if(auth()->user()->role === 'member' && !auth()->user()->is_approved_adult)
+            <div class="fixed top-20 left-1/2 -translate-x-1/2 z-[60] w-full max-w-4xl px-4 pointer-events-none">
+                <div class="bg-netflix-dark/80 backdrop-blur-md border border-amber-500/30 rounded-lg p-4 shadow-2xl flex items-center justify-between pointer-events-auto fade-in">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold text-sm">Verifikasi KTP Diperlukan</h4>
+                            <p class="text-gray-400 text-xs mt-0.5">Akun Anda sedang menunggu persetujuan admin untuk akses konten dewasa (18+).</p>
+                        </div>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="text-gray-500 hover:text-white transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+            </div>
+        @endif
+    @endauth
+
     @forelse($sliderItems as $index => $item)
         <div x-show="activeSlide === {{ $index }}" 
              x-transition:enter="transition ease-out duration-1000"
@@ -127,17 +148,34 @@
     </div>
     <div class="flex gap-3 overflow-x-auto scrollbar-hide pb-4">
         @foreach($latestMovies as $movie)
-        <a href="{{ route('movies.show', $movie->slug) }}" class="movie-card flex-shrink-0 w-40 md:w-48 group relative rounded-lg overflow-hidden shadow-lg">
-            <div class="aspect-[2/3] bg-netflix-gray">
+        <a href="{{ route('movies.show', $movie->slug) }}" class="movie-card flex-shrink-0 w-40 md:w-48 group relative rounded-lg overflow-hidden shadow-lg border border-white/5">
+            <div class="aspect-[2/3] bg-netflix-gray relative">
                 @if($movie->poster)
-                    <img src="{{ asset('storage/' . $movie->poster) }}" alt="{{ $movie->title }}" class="w-full h-full object-cover">
+                    <img src="{{ asset('storage/' . $movie->poster) }}" alt="{{ $movie->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                 @else
                     <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-netflix-red/20 to-netflix-dark">
                         <span class="text-3xl">🎬</span>
                     </div>
                 @endif
+                
+                {{-- Quality Badge - Top Right --}}
+                @if($movie->quality)
+                <div class="absolute top-2 right-2 z-10">
+                    <span class="bg-netflix-red text-[10px] font-black px-1.5 py-0.5 rounded shadow-lg shadow-black/50">{{ $movie->quality }}</span>
+                </div>
+                @endif
+
+                {{-- Rating Badge - Bottom Center --}}
+                @if($movie->rating)
+                <div class="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span class="bg-black/80 backdrop-blur-sm text-amber-400 text-[10px] font-bold px-2 py-1 rounded-full border border-amber-400/30 flex items-center gap-1">
+                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        {{ $movie->rating }}
+                    </span>
+                </div>
+                @endif
             </div>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
                 <h3 class="text-white font-semibold text-sm truncate">{{ $movie->title }}</h3>
                 <div class="flex items-center gap-2 text-xs text-gray-300 mt-1">
                     @if($movie->rating)<span class="text-green-400">⭐ {{ $movie->rating }}</span>@endif

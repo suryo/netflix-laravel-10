@@ -20,16 +20,24 @@ use App\Http\Controllers\CommentController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/search', [HomeController::class, 'search'])->name('search');
 Route::get('/movies', [MovieController::class, 'index'])->name('movies.index');
+Route::get('/tv-series', [MovieController::class, 'tvSeries'])->name('tv.index'); // New TV Series Route
 Route::get('/movies/{slug}', [MovieController::class, 'show'])->name('movies.show');
 Route::post('/movies/{movie}/comments', [CommentController::class, 'store'])->name('comments.store');
-
-
 Route::get('/category/{slug}', [MovieController::class, 'byCategory'])->name('movies.category');
 
+// Auth Routes
+Route::get('/login', [\App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'login']);
+Route::post('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'register']);
+
 // Admin Routes
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('categories', AdminCategoryController::class)->except(['show']);
     Route::resource('movies', AdminMovieController::class)->except(['show']);
     Route::resource('comments', AdminCommentController::class)->only(['index', 'destroy']);
+    Route::get('users/approvals', [\App\Http\Controllers\Admin\DashboardController::class, 'approvals'])->name('users.approvals');
+    Route::post('users/{user}/approve-adult', [\App\Http\Controllers\Admin\DashboardController::class, 'approveAdult'])->name('users.approve_adult');
 });

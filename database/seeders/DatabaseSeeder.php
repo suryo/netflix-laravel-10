@@ -48,5 +48,9 @@ class DatabaseSeeder extends Seeder
 
             Movie::create($movieData);
         }
+
+        $this->call([
+            UserSeeder::class,
+        ]);
     }
 }

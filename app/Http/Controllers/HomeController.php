@@ -10,12 +10,33 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $featured = Movie::where('is_featured', true)->latest()->first();
-        $sliders = Movie::where('is_slider', true)->latest()->get();
-        $categories = Category::with(['movies' => function ($q) {
+        $showAdult = auth()->check() && auth()->user()->is_approved_adult;
+
+        $featured = Movie::where('is_featured', true)
+            ->when(!$showAdult, function($q) {
+                return $q->whereHas('category', function($cq) { $cq->where('is_adult', false); });
+            })
+            ->latest()->first();
+
+        $sliders = Movie::where('is_slider', true)
+            ->when(!$showAdult, function($q) {
+                return $q->whereHas('category', function($cq) { $cq->where('is_adult', false); });
+            })
+            ->latest()->get();
+
+        $categories = Category::with(['movies' => function ($q) use ($showAdult) {
             $q->orderBy('release_year', 'desc')->take(12);
-        }])->get();
-        $latestMovies = Movie::latest()->take(12)->get();
+        }])
+        ->when(!$showAdult, function($q) {
+            return $q->where('is_adult', false);
+        })
+        ->get();
+
+        $latestMovies = Movie::latest()
+            ->when(!$showAdult, function($q) {
+                return $q->whereHas('category', function($cq) { $cq->where('is_adult', false); });
+            })
+            ->take(12)->get();
 
         return view('home', compact('featured', 'sliders', 'categories', 'latestMovies'));
     }
@@ -23,12 +44,17 @@ class HomeController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('q');
-        $movies = Movie::where('title', 'like', "%{$query}%")
-            ->orWhere('description', 'like', "%{$query}%")
-            ->orWhere('director', 'like', "%{$query}%")
-            ->orWhere('cast', 'like', "%{$query}%")
+        $showAdult = auth()->check() && auth()->user()->is_approved_adult;
+
+        $movies = Movie::where('title', 'LIKE', "%{$query}%")
+            ->orWhere('director', 'LIKE', "%{$query}%")
+            ->orWhere('cast', 'LIKE', "%{$query}%")
+            ->when(!$showAdult, function($q) {
+                return $q->whereHas('category', function($cq) { $cq->where('is_adult', false); });
+            })
             ->with('category')
-            ->paginate(20);
+            ->latest()
+            ->paginate(24);
 
         return view('search', compact('movies', 'query'));
     }

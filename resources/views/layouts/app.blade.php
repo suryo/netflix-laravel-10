@@ -51,15 +51,25 @@
                         NETFLIXKU
                     </a>
                     <div class="hidden md:flex items-center space-x-6">
-                        <a href="{{ route('home') }}" class="text-sm font-medium text-white hover:text-netflix-red transition-colors">Home</a>
-                        <a href="{{ route('movies.index') }}" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Movies</a>
+                        <a href="{{ route('home') }}" class="text-sm font-medium {{ request()->routeIs('home') ? 'text-white font-bold' : 'text-gray-300 hover:text-white' }} transition-colors">Home</a>
+                        <a href="{{ route('movies.index') }}" class="text-sm font-medium {{ request()->routeIs('movies.index') ? 'text-white font-bold' : 'text-gray-300 hover:text-white' }} transition-colors">Movies</a>
+                        <a href="{{ route('tv.index') }}" class="text-sm font-medium {{ request()->routeIs('tv.index') ? 'text-white font-bold' : 'text-gray-300 hover:text-white' }} transition-colors">Tv Series</a>
+                        
+                        {{-- Categories Dropdown --}}
                         <div class="relative group">
                             <button class="text-sm font-medium text-gray-300 hover:text-white transition-colors flex items-center gap-1">
                                 Categories
                                 <svg class="w-3 h-3 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                             </button>
                             <div class="absolute top-full left-0 mt-2 w-48 bg-netflix-gray/95 backdrop-blur-xl rounded-lg shadow-2xl border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 py-2">
-                                @php $navCategories = \App\Models\Category::all(); @endphp
+                                @php 
+                                    $navCategories = \App\Models\Category::all(); 
+                                    if(Auth::check() && Auth::user()->is_approved_adult) {
+                                        // Show all
+                                    } else {
+                                        $navCategories = $navCategories->where('is_adult', false);
+                                    }
+                                @endphp
                                 @foreach($navCategories as $cat)
                                     <a href="{{ route('movies.category', $cat->slug) }}" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-colors">{{ $cat->name }}</a>
                                 @endforeach
@@ -68,22 +78,55 @@
                     </div>
                 </div>
 
-                {{-- Search & Admin --}}
+                {{-- Right Side --}}
                 <div class="flex items-center space-x-4">
-                    <form action="{{ route('search') }}" method="GET" class="relative" id="search-form">
+                    <form action="{{ route('search') }}" method="GET" class="relative hidden sm:block" id="search-form">
                         <div class="flex items-center">
                             <button type="button" onclick="toggleSearch()" class="text-gray-300 hover:text-white transition-colors p-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                             </button>
-                            <input type="text" name="q" placeholder="Search movies..." value="{{ request('q') }}"
+                            <input type="text" name="q" placeholder="Titles, people, genres..." value="{{ request('q') }}"
                                 class="search-input w-0 bg-transparent border-b border-white/30 text-white text-sm focus:outline-none focus:border-netflix-red transition-all duration-300 opacity-0"
                                 id="search-input">
                         </div>
                     </form>
-                    <a href="{{ route('admin.dashboard') }}" class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-medium rounded-md transition-all">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                        Admin
-                    </a>
+
+                    @guest
+                        <a href="{{ route('login') }}" class="text-sm font-medium text-white hover:text-netflix-red transition-colors">Sign In</a>
+                        <a href="{{ route('register') }}" class="btn-netflix px-4 py-2 text-white text-xs font-bold rounded-md">Join Now</a>
+                    @else
+                        <div class="relative group">
+                            <button class="flex items-center gap-2 group">
+                                <div class="w-8 h-8 rounded bg-netflix-red flex items-center justify-center font-bold text-white text-sm">
+                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                </div>
+                                <svg class="w-3 h-3 text-gray-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            
+                            <div class="absolute top-full right-0 mt-2 w-48 bg-netflix-gray/95 backdrop-blur-xl rounded-lg shadow-2xl border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 py-2">
+                                <div class="px-4 py-2 border-b border-white/5 mb-1 text-xs text-gray-500">
+                                    Signed in as <span class="text-white font-medium">{{ Auth::user()->name }}</span>
+                                </div>
+                                
+                                @if(Auth::user()->role === 'admin')
+                                    <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-colors">Admin Panel</a>
+                                @endif
+                                
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-colors">Account Settings</a>
+                                
+                                <form action="{{ route('logout') }}" method="POST" class="mt-1 border-t border-white/5 pt-1">
+                                    @csrf
+                                    <button type="submit" class="w-full text-left px-4 py-2 text-sm text-netflix-red hover:bg-white/5 transition-colors font-semibold">Sign Out</button>
+                                </form>
+                            </div>
+                        </div>
+                    @endguest
+
+                    {{-- Mobile Menu Trigger --}}
+                    <button onclick="toggleMobileMenu()" class="md:hidden text-gray-300 hover:text-white p-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    </button>
+                </div>
                     {{-- Mobile Menu --}}
                     <button onclick="toggleMobileMenu()" class="md:hidden text-gray-300 hover:text-white p-2">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>

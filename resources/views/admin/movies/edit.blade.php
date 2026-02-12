@@ -43,20 +43,27 @@
         <form action="{{ route('admin.movies.update', $movie) }}" method="POST" enctype="multipart/form-data" id="movieForm">
             @csrf @method('PUT')
 
-            {{-- Title & Category --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div>
+            {{-- Title, Type & Category --}}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="md:col-span-1">
                     <label class="block text-sm font-medium text-gray-300 mb-2">Movie Title *</label>
                     <input type="text" name="title" value="{{ old('title', $movie->title) }}" placeholder="e.g. The Dark Knight"
                         class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent transition-all" required>
                     @error('title')<p class="text-red-400 text-xs mt-1">{{ $message }}</p>@enderror
                 </div>
                 <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Content Type *</label>
+                    <select name="type" class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent transition-all" required>
+                        <option value="movie" {{ old('type', $movie->type) == 'movie' ? 'selected' : '' }}>Movie</option>
+                        <option value="tv_series" {{ old('type', $movie->type) == 'tv_series' ? 'selected' : '' }}>TV Series</option>
+                    </select>
+                </div>
+                <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Category *</label>
                     <select name="category_id" class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent transition-all" required>
                         <option value="">Select Category</option>
                         @foreach($categories as $category)
-                            <option value="{{ $category->id }}" {{ old('category_id', $movie->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                            <option value="{{ $category->id }}" {{ old('category_id', $movie->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }} {{ $category->is_adult ? '(18+)' : '' }}</option>
                         @endforeach
                     </select>
                     @error('category_id')<p class="text-red-400 text-xs mt-1">{{ $message }}</p>@enderror

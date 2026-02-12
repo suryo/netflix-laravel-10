@@ -11,9 +11,23 @@ class Movie extends Model
     use HasFactory;
 
     protected $fillable = [
-        'category_id', 'title', 'slug', 'description', 'poster', 'backdrop',
-        'video_url', 'is_featured', 'rating', 'release_year', 'duration', 
-        'director', 'cast', 'quality', 'views', 'is_slider'
+        'title',
+        'slug',
+        'description',
+        'poster',
+        'backdrop',
+        'video_url',
+        'is_featured',
+        'is_slider',
+        'rating',
+        'release_year',
+        'duration',
+        'director',
+        'cast',
+        'category_id',
+        'quality',
+        'type',
+        'views',
     ];
 
     protected $casts = [

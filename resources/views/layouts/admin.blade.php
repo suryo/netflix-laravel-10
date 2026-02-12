@@ -51,6 +51,15 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
                     Comments
                 </a>
+                <a href="{{ route('admin.users.approvals') }}" class="sidebar-link flex items-center justify-between px-6 py-3 text-sm font-medium {{ request()->routeIs('admin.users.approvals') ? 'active' : '' }}">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A3.323 3.323 0 0010.605 2.02a2.335 2.335 0 01-2.012 2.012 3.323 3.323 0 00-4.016 4.016 2.335 2.335 0 012.012 2.012 3.323 3.323 0 004.016 4.016 2.335 2.335 0 012.012 2.012 3.323 3.323 0 004.016-4.016 2.335 2.335 0 01-2.012-2.012z"/></svg>
+                        Approvals
+                    </div>
+                    @if(isset($pendingApprovals) && $pendingApprovals > 0)
+                        <span class="bg-red-500 text-white text-[10px] font-black px-1.5 py-0.5 rounded-full shadow-lg pulse-glow">{{ $pendingApprovals }}</span>
+                    @endif
+                </a>
                 <div class="border-t border-admin-border my-4"></div>
                 <a href="{{ route('home') }}" class="sidebar-link flex items-center gap-3 px-6 py-3 text-sm font-medium text-gray-500">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
@@ -86,6 +95,7 @@
                         <a href="{{ route('admin.categories.index') }}" class="sidebar-link flex items-center gap-3 px-6 py-3 text-sm font-medium">Categories</a>
                         <a href="{{ route('admin.movies.index') }}" class="sidebar-link flex items-center gap-3 px-6 py-3 text-sm font-medium">Movies</a>
                         <a href="{{ route('admin.comments.index') }}" class="sidebar-link flex items-center gap-3 px-6 py-3 text-sm font-medium">Comments</a>
+                        <a href="{{ route('admin.users.approvals') }}" class="sidebar-link flex items-center gap-3 px-6 py-3 text-sm font-medium text-amber-400">User Approvals</a>
 
                         <a href="{{ route('home') }}" class="sidebar-link flex items-center gap-3 px-6 py-3 text-sm font-medium text-gray-500">View Site</a>
                     </nav>

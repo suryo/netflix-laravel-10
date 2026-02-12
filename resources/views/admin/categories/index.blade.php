@@ -18,6 +18,7 @@
                 <tr class="border-b border-admin-border">
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">#</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Type</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Slug</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Movies</th>
                     <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
@@ -28,6 +29,13 @@
                 <tr class="hover:bg-white/5 transition-colors">
                     <td class="px-6 py-4 text-sm text-gray-500">{{ $i + 1 }}</td>
                     <td class="px-6 py-4 text-white font-medium">{{ $category->name }}</td>
+                    <td class="px-6 py-4">
+                        @if($category->is_adult)
+                            <span class="bg-red-500/10 text-red-400 text-[10px] px-2 py-0.5 rounded border border-red-500/20 font-bold uppercase">Restricted (18+)</span>
+                        @else
+                            <span class="bg-green-500/10 text-green-400 text-[10px] px-2 py-0.5 rounded border border-green-500/20 font-bold uppercase">Public</span>
+                        @endif
+                    </td>
                     <td class="px-6 py-4 text-sm text-gray-400">{{ $category->slug }}</td>
                     <td class="px-6 py-4">
                         <span class="bg-admin-accent/20 text-admin-accent text-xs px-2 py-1 rounded-full font-medium">{{ $category->movies_count }}</span>
