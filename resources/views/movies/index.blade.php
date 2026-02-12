@@ -8,7 +8,9 @@
     <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
             <h1 class="text-3xl font-black text-white">
-                @if(isset($category))
+                @if(isset($isAdultSection) && $isAdultSection)
+                    <span class="text-netflix-red drop-shadow-[0_0_10px_rgba(229,9,20,0.8)]">🔞 Restricted Content (21+)</span>
+                @elseif(isset($category))
                     <span class="text-netflix-red">{{ $category->name }}</span> Movies
                 @else
                     All Movies
@@ -19,9 +21,9 @@
 
         {{-- Category Filter --}}
         <div class="flex flex-wrap gap-2">
-            <a href="{{ route('movies.index') }}"
-               class="px-4 py-2 text-sm rounded-full font-medium transition-all {{ !isset($category) ? 'bg-netflix-red text-white' : 'bg-white/10 text-gray-300 hover:bg-white/20 hover:text-white' }}">
-                All
+            <a href="{{ isset($isAdultSection) && $isAdultSection ? route('movies.adult') : route('movies.index') }}"
+               class="px-4 py-2 text-sm rounded-full font-medium transition-all {{ (!isset($category)) ? 'bg-netflix-red text-white' : 'bg-white/10 text-gray-300 hover:bg-white/20 hover:text-white' }}">
+                All {{ isset($isAdultSection) && $isAdultSection ? '21+' : '' }}
             </a>
             @foreach($categories as $cat)
                 <a href="{{ route('movies.category', $cat->slug) }}"

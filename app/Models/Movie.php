@@ -52,6 +52,11 @@ class Movie extends Model
         return $this->hasMany(Comment::class)->latest();
     }
 
+    public function episodes()
+    {
+        return $this->hasMany(Episode::class)->orderBy('episode_number', 'asc');
+    }
+
     /**
      * Get Google Drive embed URL from the video_url
      */

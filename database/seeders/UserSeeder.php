@@ -22,6 +22,7 @@ class UserSeeder extends Seeder
                 'role' => 'admin',
                 'ktp_number' => null,
                 'is_approved_adult' => true,
+                'is_approved_member' => true,
             ]
         );
 
@@ -34,6 +35,7 @@ class UserSeeder extends Seeder
                 'role' => 'member',
                 'ktp_number' => '3201234567890001',
                 'is_approved_adult' => false,
+                'is_approved_member' => false,
             ]
         );
 
@@ -46,6 +48,7 @@ class UserSeeder extends Seeder
                 'role' => 'member',
                 'ktp_number' => '1234567890123456',
                 'is_approved_adult' => true,
+                'is_approved_member' => true,
             ]
         );
     }

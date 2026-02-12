@@ -29,6 +29,54 @@
         height: 100%;
         border: none;
     }
+    .episode-list-container {
+        background: #0f0f0f;
+        border: 1px solid #27272a;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .episode-item {
+        padding: 12px 16px;
+        border-bottom: 1px solid #1f1f23;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .episode-item:last-child {
+        border-bottom: none;
+    }
+    .episode-item:hover {
+        background: #1a1a1e;
+    }
+    .episode-item.active {
+        background: #e5091420;
+        border-left: 4px solid #e50914;
+    }
+    .episode-item.active .ep-title {
+        color: #e50914;
+        font-weight: bold;
+    }
+    .ep-number {
+        font-family: 'Inter', sans-serif;
+        font-weight: 900;
+        color: #444;
+        font-size: 1.2rem;
+        min-width: 30px;
+    }
+    .ep-title {
+        font-size: 0.9rem;
+        color: #ddd;
+    }
+    .ep-play-icon {
+        margin-left: auto;
+        opacity: 0;
+        color: #e50914;
+    }
+    .episode-item:hover .ep-play-icon, .episode-item.active .ep-play-icon {
+        opacity: 1;
+    }
     .meta-card {
         background: rgba(24, 24, 27, 0.5);
         border: 1px solid rgba(39, 39, 42, 1);
@@ -103,25 +151,82 @@
     <div class="content-wrapper px-4">
         
         {{-- Player Section --}}
-        <section class="player-section">
-            @if($movie->video_url)
-                <div class="player-container">
-                    <iframe 
-                        src="{{ $movie->embed_url }}" 
-                        allow="autoplay; encrypted-media; fullscreen" 
-                        allowfullscreen
-                        loading="lazy">
-                    </iframe>
+        <section class="player-section mb-6">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                {{-- Main Player --}}
+                <div class="lg:col-span-3">
+                    @php
+                        $initialUrl = $movie->embed_url;
+                        if ($movie->type === 'tv_series' && $movie->episodes->count() > 0) {
+                            // Extract ID from first episode's video_url using the same logic as Movie model
+                            $url = $movie->episodes->first()->video_url;
+                            $patterns = ['/\/file\/d\/([a-zA-Z0-9_-]+)/', '/id=([a-zA-Z0-9_-]+)/', '/\/d\/([a-zA-Z0-9_-]+)/'];
+                            $found = false;
+                            foreach ($patterns as $pattern) {
+                                if (preg_match($pattern, $url, $matches)) {
+                                    $initialUrl = 'https://drive.google.com/file/d/' . $matches[1] . '/preview';
+                                    $found = true;
+                                    break;
+                                }
+                            }
+                        }
+                    @endphp
+
+                    @if($initialUrl)
+                        <div class="player-container">
+                            <iframe 
+                                id="mainPlayer"
+                                src="{{ $initialUrl }}" 
+                                allow="autoplay; encrypted-media; fullscreen" 
+                                allowfullscreen
+                                loading="lazy">
+                            </iframe>
+                        </div>
+                    @else
+                        <div class="player-container flex items-center justify-center bg-zinc-900 border border-zinc-800">
+                            <div class="text-center">
+                                <div class="text-5xl mb-4">🎬</div>
+                                <h3 class="text-xl font-bold text-white mb-2">Video Tidak Tersedia</h3>
+                                <p class="text-gray-500">Sumber video belum ditambahkan.</p>
+                            </div>
+                        </div>
+                    @endif
                 </div>
-            @else
-                <div class="player-container flex items-center justify-center bg-zinc-900 border border-zinc-800">
-                    <div class="text-center">
-                        <div class="text-5xl mb-4">🎬</div>
-                        <h3 class="text-xl font-bold text-white mb-2">Video Tidak Tersedia</h3>
-                        <p class="text-gray-500">Sumber video belum ditambahkan untuk film ini.</p>
+
+                {{-- Episode List (Sidebar style for desktop) --}}
+                @if($movie->type === 'tv_series' && $movie->episodes->count() > 0)
+                <div class="lg:col-span-1">
+                    <div class="episode-list-container h-full max-h-[500px] overflow-y-auto">
+                        <div class="p-4 bg-zinc-800/50 border-bottom border-zinc-700">
+                            <h4 class="text-white font-bold text-sm uppercase tracking-wider">Daftar Episode</h4>
+                            <p class="text-zinc-500 text-[10px]">{{ $movie->episodes->count() }} EPISODES TOTAL</p>
+                        </div>
+                        @foreach($movie->episodes as $index => $episode)
+                            @php
+                                $epEmbedUrl = $episode->video_url;
+                                $patterns = ['/\/file\/d\/([a-zA-Z0-9_-]+)/', '/id=([a-zA-Z0-9_-]+)/', '/\/d\/([a-zA-Z0-9_-]+)/'];
+                                foreach ($patterns as $pattern) {
+                                    if (preg_match($pattern, $episode->video_url, $matches)) {
+                                        $epEmbedUrl = 'https://drive.google.com/file/d/' . $matches[1] . '/preview';
+                                        break;
+                                    }
+                                }
+                            @endphp
+                            <div class="episode-item {{ $index === 0 ? 'active' : '' }}" data-url="{{ $epEmbedUrl }}">
+                                <span class="ep-number">{{ str_pad($episode->episode_number, 2, '0', STR_PAD_LEFT) }}</span>
+                                <div class="flex flex-col">
+                                    <span class="ep-title line-clamp-1">{{ $episode->title ?: 'Episode ' . $episode->episode_number }}</span>
+                                    <span class="text-[9px] text-zinc-600 uppercase font-bold tracking-tighter">HD QUALITY</span>
+                                </div>
+                                <div class="ep-play-icon">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/></svg>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
-            @endif
+                @endif
+            </div>
         </section>
 
         {{-- Main Metadata Section --}}
@@ -287,3 +392,32 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const episodeItems = document.querySelectorAll('.episode-item');
+        const mainPlayer = document.getElementById('mainPlayer');
+
+        episodeItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const videoUrl = this.getAttribute('data-url');
+                
+                // Update player
+                if (mainPlayer && videoUrl) {
+                    mainPlayer.src = videoUrl;
+                    
+                    // Update active state
+                    episodeItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Scroll to player smoothly on mobile
+                    if (window.innerWidth < 1024) {
+                        mainPlayer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            });
+        });
+    });
+</script>
+@endpush

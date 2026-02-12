@@ -65,6 +65,14 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                     View Site
                 </a>
+                
+                <form action="{{ route('logout') }}" method="POST" class="px-6 py-3">
+                    @csrf
+                    <button type="submit" class="flex items-center gap-3 text-sm font-medium text-red-500/70 hover:text-red-500 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                        Logout
+                    </button>
+                </form>
             </nav>
         </aside>
 
@@ -98,6 +106,11 @@
                         <a href="{{ route('admin.users.approvals') }}" class="sidebar-link flex items-center gap-3 px-6 py-3 text-sm font-medium text-amber-400">User Approvals</a>
 
                         <a href="{{ route('home') }}" class="sidebar-link flex items-center gap-3 px-6 py-3 text-sm font-medium text-gray-500">View Site</a>
+
+                        <form action="{{ route('logout') }}" method="POST" class="px-6 py-3">
+                            @csrf
+                            <button type="submit" class="text-sm font-medium text-red-500">Logout</button>
+                        </form>
                     </nav>
                 </div>
             </div>

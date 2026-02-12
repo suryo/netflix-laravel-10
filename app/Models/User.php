@@ -24,6 +24,7 @@ class User extends Authenticatable
         'role',
         'ktp_number',
         'is_approved_adult',
+        'is_approved_member',
     ];
 
     /**

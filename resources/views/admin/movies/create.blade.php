@@ -47,14 +47,14 @@
             {{-- Title, Type & Category --}}
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 <div class="md:col-span-1">
-                    <label class="block text-sm font-medium text-gray-300 mb-2">Movie Title *</label>
+                    <label class="block text-sm font-medium text-gray-300 mb-2" id="titleLabel">Movie Title *</label>
                     <input type="text" name="title" value="{{ old('title') }}" placeholder="e.g. The Dark Knight"
                         class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent transition-all" required>
                     @error('title')<p class="text-red-400 text-xs mt-1">{{ $message }}</p>@enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Content Type *</label>
-                    <select name="type" class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent transition-all" required>
+                    <select name="type" id="typeSelect" class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent transition-all" required>
                         <option value="movie" {{ old('type') == 'movie' ? 'selected' : '' }}>Movie</option>
                         <option value="tv_series" {{ old('type') == 'tv_series' ? 'selected' : '' }}>TV Series</option>
                     </select>
@@ -82,12 +82,12 @@
             {{-- Video URL & Quality --}}
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-gray-300 mb-2">
+                    <label class="block text-sm font-medium text-gray-300 mb-2" id="videoUrlLabel">
                         Video URL (Google Drive)
                     </label>
-                    <input type="text" name="video_url" value="{{ old('video_url') }}" placeholder="https://drive.google.com/file/d/xxx/view?usp=sharing"
+                    <input type="text" name="video_url" id="videoUrlInput" value="{{ old('video_url') }}" placeholder="https://drive.google.com/file/d/xxx/view?usp=sharing"
                         class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent transition-all">
-                    <p class="text-[10px] text-gray-500 mt-1 uppercase tracking-wider font-semibold">💡 Paste link share Google Drive, otomatis konversi ke embed</p>
+                    <p class="text-[10px] text-gray-500 mt-1 uppercase tracking-wider font-semibold" id="videoUrlHint">💡 Paste link share Google Drive, otomatis konversi ke embed</p>
                     @error('video_url')<p class="text-red-400 text-xs mt-1">{{ $message }}</p>@enderror
                 </div>
                 <div>
@@ -132,8 +132,8 @@
                         class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent transition-all">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-2">Duration</label>
-                    <input type="text" name="duration" value="{{ old('duration') }}" placeholder="e.g. 2h 30m"
+                    <label class="block text-sm font-medium text-gray-300 mb-2" id="durationLabel">Duration</label>
+                    <input type="text" name="duration" id="durationInput" value="{{ old('duration') }}" placeholder="e.g. 2h 30m"
                         class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent transition-all">
                 </div>
             </div>
@@ -152,21 +152,46 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div class="p-4 bg-white/5 rounded-lg border border-admin-border hover:border-admin-accent/30 transition-colors">
-                    <label class="flex items-center gap-3 cursor-pointer">
-                        <input type="checkbox" name="is_featured" value="1" {{ old('is_featured') ? 'checked' : '' }}
-                            class="w-5 h-5 rounded bg-admin-bg border-admin-border text-admin-accent focus:ring-admin-accent">
-                        <span class="text-sm text-gray-300 font-semibold">Tandai sebagai Unggulan (Tampil di Hero Banner)</span>
-                    </label>
+            {{-- Episode Management (Visible only for TV Series) --}}
+            <div id="episodeSection" class="hidden mb-8 border-t border-admin-border pt-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <svg class="w-5 h-5 text-admin-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        Episode Management
+                    </h3>
+                    <button type="button" id="addEpisodeBtn" class="px-4 py-2 bg-admin-accent hover:bg-blue-600 text-white text-xs font-bold rounded-lg transition-all flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        Add Episode
+                    </button>
                 </div>
-                <div class="p-4 bg-white/5 rounded-lg border border-admin-border hover:border-admin-accent/30 transition-colors">
-                    <label class="flex items-center gap-3 cursor-pointer">
-                        <input type="checkbox" name="is_slider" value="1" {{ old('is_slider') ? 'checked' : '' }}
-                            class="w-5 h-5 rounded bg-admin-bg border-admin-border text-admin-accent focus:ring-admin-accent">
-                        <span class="text-sm text-gray-300 font-semibold">Tampilkan di Slider Landing Page</span>
-                    </label>
+                
+                <div id="episodeContainer" class="space-y-4">
+                    {{-- Episode rows will be injected here --}}
                 </div>
+                
+                <template id="episodeTemplate">
+                    <div class="episode-row bg-white/5 p-4 rounded-lg border border-admin-border relative group animate-fadeIn">
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                            <div class="md:col-span-1">
+                                <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">No</label>
+                                <input type="number" name="episodes[{index}][episode_number]" value="{number}" class="w-full bg-admin-bg border border-admin-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-1 focus:ring-admin-accent" required>
+                            </div>
+                            <div class="md:col-span-4">
+                                <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Episode Title</label>
+                                <input type="text" name="episodes[{index}][title]" placeholder="e.g. Pilot / Episode 1" class="w-full bg-admin-bg border border-admin-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-1 focus:ring-admin-accent">
+                            </div>
+                            <div class="md:col-span-6">
+                                <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">G-Drive Video URL</label>
+                                <input type="text" name="episodes[{index}][video_url]" placeholder="https://drive.google.com/file/d/xxx/view" class="w-full bg-admin-bg border border-admin-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-1 focus:ring-admin-accent" required>
+                            </div>
+                            <div class="md:col-span-1 flex justify-center">
+                                <button type="button" class="remove-episode p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
             </div>
 
             {{-- Submit --}}
@@ -225,5 +250,70 @@
     document.getElementById('backdropInput').addEventListener('change', function() {
         readURL(this, 'backdropPreview');
     });
+    // Dynamic labels and episode section based on Content Type
+    const typeSelect = document.getElementById('typeSelect');
+    const titleLabel = document.getElementById('titleLabel');
+    const durationLabel = document.getElementById('durationLabel');
+    const durationInput = document.getElementById('durationInput');
+    const videoUrlLabel = document.getElementById('videoUrlLabel');
+    const videoUrlHint = document.getElementById('videoUrlHint');
+    const episodeSection = document.getElementById('episodeSection');
+
+    function updateLabels() {
+        if (typeSelect.value === 'tv_series') {
+            titleLabel.innerText = 'Series Title *';
+            durationLabel.innerText = 'Total Episodes';
+            durationInput.placeholder = 'e.g. 12 Episodes / 1 Season';
+            videoUrlLabel.innerText = 'Main Trailer / Playlist URL';
+            videoUrlHint.innerText = '💡 URL Utama untuk TV Series (Trailer/Playlist)';
+            episodeSection.classList.remove('hidden');
+        } else {
+            titleLabel.innerText = 'Movie Title *';
+            durationLabel.innerText = 'Duration';
+            durationInput.placeholder = 'e.g. 2h 30m';
+            videoUrlLabel.innerText = 'Video URL (Google Drive)';
+            videoUrlHint.innerText = '💡 Paste link share Google Drive, otomatis konversi ke embed';
+            episodeSection.classList.add('hidden');
+        }
+    }
+
+    typeSelect.addEventListener('change', updateLabels);
+    updateLabels(); // Initial run
+
+    // Episode Row Management
+    const addEpisodeBtn = document.getElementById('addEpisodeBtn');
+    const episodeContainer = document.getElementById('episodeContainer');
+    const episodeTemplate = document.getElementById('episodeTemplate').innerHTML;
+    let episodeIndex = 0;
+
+    function addEpisodeRow() {
+        const nextNumber = episodeContainer.children.length + 1;
+        const html = episodeTemplate
+            .replace(/{index}/g, episodeIndex)
+            .replace(/{number}/g, nextNumber);
+        
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        const row = tempDiv.firstElementChild;
+        
+        // Remove button functionality
+        row.querySelector('.remove-episode').addEventListener('click', function() {
+            row.remove();
+            reorderEpisodes();
+        });
+
+        episodeContainer.appendChild(row);
+        episodeIndex++;
+    }
+
+    function reorderEpisodes() {
+        const rows = episodeContainer.querySelectorAll('.episode-row');
+        rows.forEach((row, idx) => {
+            const numInput = row.querySelector('input[type="number"]');
+            if(numInput) numInput.value = idx + 1;
+        });
+    }
+
+    addEpisodeBtn.addEventListener('click', addEpisodeRow);
 </script>
 @endpush

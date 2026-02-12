@@ -40,9 +40,14 @@ class MovieController extends Controller
             'director' => 'nullable|string',
             'cast' => 'nullable|string',
             'quality' => 'nullable|string|max:10',
+            'type' => 'required|in:movie,tv_series',
+            'episodes' => 'nullable|array',
+            'episodes.*.episode_number' => 'required|integer',
+            'episodes.*.title' => 'nullable|string|max:255',
+            'episodes.*.video_url' => 'required|string',
         ]);
 
-        $data = $request->except(['poster', 'backdrop']);
+        $data = $request->except(['poster', 'backdrop', 'episodes']);
         $data['slug'] = Str::slug($request->title);
         $data['is_featured'] = $request->has('is_featured');
         $data['is_slider'] = $request->has('is_slider');
@@ -55,7 +60,13 @@ class MovieController extends Controller
             $data['backdrop'] = $request->file('backdrop')->store('movies/backdrops', 'public');
         }
 
-        Movie::create($data);
+        $movie = Movie::create($data);
+
+        if ($request->type === 'tv_series' && $request->has('episodes')) {
+            foreach ($request->episodes as $episodeData) {
+                $movie->episodes()->create($episodeData);
+            }
+        }
         return redirect()->route('admin.movies.index')->with('success', 'Movie created successfully!');
     }
 
@@ -82,9 +93,14 @@ class MovieController extends Controller
             'director' => 'nullable|string',
             'cast' => 'nullable|string',
             'quality' => 'nullable|string|max:10',
+            'type' => 'required|in:movie,tv_series',
+            'episodes' => 'nullable|array',
+            'episodes.*.episode_number' => 'required|integer',
+            'episodes.*.title' => 'nullable|string|max:255',
+            'episodes.*.video_url' => 'required|string',
         ]);
 
-        $data = $request->except(['poster', 'backdrop']);
+        $data = $request->except(['poster', 'backdrop', 'episodes']);
         $data['slug'] = Str::slug($request->title);
         $data['is_featured'] = $request->has('is_featured');
         $data['is_slider'] = $request->has('is_slider');
@@ -100,6 +116,15 @@ class MovieController extends Controller
         }
 
         $movie->update($data);
+
+        if ($request->type === 'tv_series' && $request->has('episodes')) {
+            $movie->episodes()->delete(); // Simple sync: delete and recreate
+            foreach ($request->episodes as $episodeData) {
+                $movie->episodes()->create($episodeData);
+            }
+        } else {
+            $movie->episodes()->delete();
+        }
         return redirect()->route('admin.movies.index')->with('success', 'Movie updated successfully!');
     }
 

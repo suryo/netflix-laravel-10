@@ -41,8 +41,21 @@
     @stack('styles')
 </head>
 <body class="min-h-screen">
+    {{-- Impersonation Banner --}}
+    @if(session()->has('impersonator_id'))
+    <div class="bg-amber-500 text-black py-2 px-4 sticky top-0 z-[100] flex items-center justify-between shadow-xl">
+        <div class="flex items-center gap-2 text-xs md:text-sm font-bold">
+            <svg class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            <span>MODE IMPERSONASI: Anda sedang melihat sebagai {{ auth()->user()->name }}</span>
+        </div>
+        <a href="{{ route('admin.stop_impersonating') }}" class="bg-black text-amber-500 px-3 py-1 rounded text-[10px] md:text-xs font-black hover:bg-black/80 transition-all uppercase tracking-tighter">
+            Kembali ke Admin &rarr;
+        </a>
+    </div>
+    @endif
+
     {{-- Navigation --}}
-    <nav class="glass-nav fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="navbar">
+    <nav class="glass-nav fixed top-0 left-0 right-0 z-50 transition-all duration-300 {{ session()->has('impersonator_id') ? 'mt-9' : '' }}" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 {{-- Logo --}}
@@ -54,6 +67,13 @@
                         <a href="{{ route('home') }}" class="text-sm font-medium {{ request()->routeIs('home') ? 'text-white font-bold' : 'text-gray-300 hover:text-white' }} transition-colors">Home</a>
                         <a href="{{ route('movies.index') }}" class="text-sm font-medium {{ request()->routeIs('movies.index') ? 'text-white font-bold' : 'text-gray-300 hover:text-white' }} transition-colors">Movies</a>
                         <a href="{{ route('tv.index') }}" class="text-sm font-medium {{ request()->routeIs('tv.index') ? 'text-white font-bold' : 'text-gray-300 hover:text-white' }} transition-colors">Tv Series</a>
+                        
+                        @if(Auth::check() && (Auth::user()->role === 'admin' || Auth::user()->is_approved_adult))
+                            <a href="{{ route('movies.adult') }}" class="text-sm font-black text-netflix-red hover:text-red-400 transition-all flex items-center gap-1">
+                                <span class="bg-netflix-red text-white text-[10px] px-1 rounded">21+</span>
+                                Content
+                            </a>
+                        @endif
                         
                         {{-- Categories Dropdown --}}
                         <div class="relative group">
