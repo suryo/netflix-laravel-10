@@ -18,6 +18,14 @@ class MovieController extends Controller
     public function show($slug)
     {
         $movie = Movie::where('slug', $slug)->with(['category', 'comments'])->firstOrFail();
+
+        // Increment views (session-based to avoid spamming)
+        $viewedKey = 'viewed_movie_' . $movie->id;
+        if (!session()->has($viewedKey)) {
+            $movie->increment('views');
+            session()->put($viewedKey, true);
+        }
+
         $related = Movie::where('category_id', $movie->category_id)
             ->where('id', '!=', $movie->id)
             ->latest()

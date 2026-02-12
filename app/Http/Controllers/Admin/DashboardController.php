@@ -16,8 +16,9 @@ class DashboardController extends Controller
         $totalCategories = Category::count();
         $featuredMovies = Movie::where('is_featured', true)->count();
         $totalComments = Comment::count();
+        $totalViews = Movie::sum('views');
         $latestMovies = Movie::with('category')->latest()->take(5)->get();
 
-        return view('admin.dashboard', compact('totalMovies', 'totalCategories', 'featuredMovies', 'totalComments', 'latestMovies'));
+        return view('admin.dashboard', compact('totalMovies', 'totalCategories', 'featuredMovies', 'totalComments', 'totalViews', 'latestMovies'));
     }
 }

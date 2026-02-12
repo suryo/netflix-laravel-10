@@ -12,7 +12,7 @@ class HomeController extends Controller
     {
         $featured = Movie::where('is_featured', true)->latest()->first();
         $categories = Category::with(['movies' => function ($q) {
-            $q->latest()->take(12);
+            $q->orderBy('release_year', 'desc')->take(12);
         }])->get();
         $latestMovies = Movie::latest()->take(12)->get();
 

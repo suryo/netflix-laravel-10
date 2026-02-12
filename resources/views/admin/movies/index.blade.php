@@ -22,6 +22,7 @@
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Rating</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Year</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Video</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Views</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Featured</th>
                     <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
@@ -58,6 +59,9 @@
                         @else
                             <span class="text-gray-600 text-xs">No video</span>
                         @endif
+                    </td>
+                    <td class="px-6 py-4 text-sm font-medium text-gray-300">
+                        {{ number_format($movie->views) }}
                     </td>
                     <td class="px-6 py-4">
                         @if($movie->is_featured)
