@@ -38,7 +38,7 @@
             
             {{-- Background Image --}}
             @if($item->backdrop)
-                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('storage/' . $item->backdrop) }}')"></div>
+                <div class="absolute inset-0 bg-cover bg-top" style="background-image: url('{{ asset('storage/' . $item->backdrop) }}')"></div>
             @else
                 <div class="absolute inset-0 bg-gradient-to-br from-netflix-red/20 via-netflix-dark to-netflix-darker"></div>
             @endif
