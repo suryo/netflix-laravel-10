@@ -33,6 +33,10 @@ Route::get('/21-plus', [MovieController::class, 'adultIndex'])->name('movies.adu
 Route::get('/tv-online', [TvController::class, 'index'])->name('tv_online.index');
 Route::get('/tv-online/{slug}', [TvController::class, 'show'])->name('tv_online.show');
 
+// Radio Online Routes
+Route::get('/radio-online', [App\Http\Controllers\RadioController::class, 'index'])->name('radio.index');
+Route::get('/radio-online/{slug}', [App\Http\Controllers\RadioController::class, 'show'])->name('radio.show');
+
 // Auth Routes
 Route::get('/login', [\App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'login']);

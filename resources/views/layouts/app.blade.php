@@ -68,6 +68,7 @@
                         <a href="{{ route('movies.index') }}" class="text-sm font-medium {{ request()->routeIs('movies.index') ? 'text-white font-bold' : 'text-gray-300 hover:text-white' }} transition-colors">Movies</a>
                         <a href="{{ route('tv.index') }}" class="text-sm font-medium {{ request()->routeIs('tv.index') ? 'text-white font-bold' : 'text-gray-300 hover:text-white' }} transition-colors">Tv Series</a>
                         <a href="{{ route('tv_online.index') }}" class="text-sm font-medium {{ request()->routeIs('tv_online.*') ? 'text-white font-bold' : 'text-gray-300 hover:text-white' }} transition-colors">TV Online</a>
+                        <a href="{{ route('radio.index') }}" class="text-sm font-medium {{ request()->routeIs('radio.*') ? 'text-white font-bold' : 'text-gray-300 hover:text-white' }} transition-colors">Radio Online</a>
                         
                         @if(Auth::check() && (Auth::user()->role === 'admin' || Auth::user()->is_approved_adult))
                             <a href="{{ route('movies.adult') }}" class="text-sm font-black text-netflix-red hover:text-red-400 transition-all flex items-center gap-1">
@@ -162,6 +163,7 @@
                 <a href="{{ route('home') }}" class="block text-sm text-white">Home</a>
                 <a href="{{ route('movies.index') }}" class="block text-sm text-gray-300">Movies</a>
                 <a href="{{ route('tv_online.index') }}" class="block text-sm text-gray-300">TV Online</a>
+                <a href="{{ route('radio.index') }}" class="block text-sm text-gray-300">Radio Online</a>
                 @foreach($navCategories as $cat)
                     <a href="{{ route('movies.category', $cat->slug) }}" class="block text-sm text-gray-400 pl-4">{{ $cat->name }}</a>
                 @endforeach
@@ -188,6 +190,8 @@
                     <ul class="space-y-2">
                         <li><a href="{{ route('home') }}" class="text-gray-500 hover:text-white text-sm transition-colors">Home</a></li>
                         <li><a href="{{ route('movies.index') }}" class="text-gray-500 hover:text-white text-sm transition-colors">All Movies</a></li>
+                        <li><a href="{{ route('tv_online.index') }}" class="text-gray-500 hover:text-white text-sm transition-colors">TV Online</a></li>
+                        <li><a href="{{ route('radio.index') }}" class="text-gray-500 hover:text-white text-sm transition-colors">Radio Online</a></li>
                         <li><a href="{{ route('search') }}" class="text-gray-500 hover:text-white text-sm transition-colors">Search</a></li>
                     </ul>
                 </div>
