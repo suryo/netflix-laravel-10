@@ -2,141 +2,281 @@
 
 @section('title', $movie->title . ' - Netflixku')
 
+@push('styles')
+<style>
+    .content-wrapper {
+        max-width: 1280px;
+        margin: 0 auto;
+    }
+    .player-section {
+        background: #000;
+        padding: 20px 0;
+    }
+    .player-container {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16/9;
+        background: #000;
+        box-shadow: 0 0 50px rgba(0,0,0,0.8);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .player-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+    .meta-card {
+        background: rgba(24, 24, 27, 0.5);
+        border: 1px solid rgba(39, 39, 42, 1);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    .meta-poster {
+        width: 180px;
+        flex-shrink: 0;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .rating-stars {
+        color: #ffc107;
+    }
+    .quality-badge {
+        background: #e50914;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 0.75rem;
+    }
+    .info-label {
+        color: #888;
+        font-size: 0.85rem;
+        min-width: 100px;
+        display: inline-block;
+    }
+    .info-value {
+        color: #ccc;
+        font-size: 0.85rem;
+    }
+    .gallery-item {
+        aspect-ratio: 16/9;
+        overflow: hidden;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .gallery-item:hover {
+        transform: scale(1.05);
+    }
+    .comment-form input, .comment-form textarea {
+        background: #111;
+        border: 1px solid #333;
+        color: #fff;
+        border-radius: 4px;
+        padding: 0.5rem 1rem;
+        width: 100%;
+    }
+    .comment-form input:focus, .comment-form textarea:focus {
+        border-color: #e50914;
+        outline: none;
+    }
+    .btn-submit {
+        background: #e50914;
+        color: white;
+        padding: 0.5rem 2rem;
+        border-radius: 4px;
+        font-weight: bold;
+        transition: background 0.2s;
+    }
+    .btn-submit:hover {
+        background: #b20710;
+    }
+</style>
+@endpush
+
 @section('content')
-{{-- Movie Hero --}}
-<section class="relative min-h-[70vh] flex items-end">
-    @if($movie->backdrop)
-        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('storage/' . $movie->backdrop) }}')"></div>
-    @elseif($movie->poster)
-        <div class="absolute inset-0 bg-cover bg-center blur-xl opacity-30" style="background-image: url('{{ asset('storage/' . $movie->poster) }}')"></div>
-    @endif
-    <div class="absolute inset-0 bg-gradient-to-t from-netflix-darker via-netflix-darker/80 to-transparent"></div>
-
-    <div class="relative z-10 max-w-7xl mx-auto px-4 pb-12 w-full">
-        <div class="flex flex-col md:flex-row gap-8 items-start fade-in">
-            {{-- Poster --}}
-            <div class="w-56 md:w-72 flex-shrink-0 rounded-xl overflow-hidden shadow-2xl shadow-black/50 -mt-20">
-                @if($movie->poster)
-                    <img src="{{ asset('storage/' . $movie->poster) }}" alt="{{ $movie->title }}" class="w-full aspect-[2/3] object-cover">
-                @else
-                    <div class="w-full aspect-[2/3] flex items-center justify-center bg-gradient-to-br from-netflix-red/20 to-netflix-dark rounded-xl">
-                        <span class="text-6xl">🎬</span>
+<div class="pt-16 pb-12">
+    <div class="content-wrapper px-4">
+        
+        {{-- Player Section --}}
+        <section class="player-section">
+            @if($movie->video_url)
+                <div class="player-container">
+                    <iframe 
+                        src="{{ $movie->embed_url }}" 
+                        allow="autoplay; encrypted-media; fullscreen" 
+                        allowfullscreen
+                        loading="lazy">
+                    </iframe>
+                </div>
+            @else
+                <div class="player-container flex items-center justify-center bg-zinc-900 border border-zinc-800">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">🎬</div>
+                        <h3 class="text-xl font-bold text-white mb-2">Video Tidak Tersedia</h3>
+                        <p class="text-gray-500">Sumber video belum ditambahkan untuk film ini.</p>
                     </div>
-                @endif
-            </div>
+                </div>
+            @endif
+        </section>
 
-            {{-- Movie Info --}}
-            <div class="flex-1 pt-4">
-                @if($movie->category)
-                    <a href="{{ route('movies.category', $movie->category->slug) }}" class="inline-flex items-center gap-1 bg-netflix-red/20 border border-netflix-red/30 text-netflix-red text-xs font-bold px-3 py-1 rounded-full mb-3 hover:bg-netflix-red/30 transition-colors">
-                        {{ $movie->category->name }}
-                    </a>
-                @endif
-
-                <h1 class="text-3xl md:text-5xl font-black text-white mb-4 leading-tight">{{ $movie->title }}</h1>
-
-                {{-- Meta Info --}}
-                <div class="flex flex-wrap items-center gap-4 text-sm text-gray-300 mb-6">
-                    @if($movie->rating)
-                        <span class="flex items-center gap-1 text-green-400 font-bold">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                            {{ $movie->rating }}/10
-                        </span>
-                    @endif
-                    @if($movie->release_year)
-                        <span class="flex items-center gap-1">
-                            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                            {{ $movie->release_year }}
-                        </span>
-                    @endif
-                    @if($movie->duration)
-                        <span class="flex items-center gap-1">
-                            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            {{ $movie->duration }}
-                        </span>
+        {{-- Main Metadata Section --}}
+        <section class="meta-card">
+            <div class="flex flex-col md:flex-row gap-8">
+                {{-- Poster --}}
+                <div class="meta-poster mx-auto md:mx-0">
+                    @if($movie->poster)
+                        <img src="{{ asset('storage/' . $movie->poster) }}" alt="{{ $movie->title }}" class="w-full rounded shadow-xl">
+                    @else
+                        <div class="w-full aspect-[2/3] bg-zinc-800 rounded flex items-center justify-center text-3xl">🎬</div>
                     @endif
                 </div>
 
-                {{-- Action Buttons --}}
-                <div class="flex items-center gap-3 mb-8">
-                    @if($movie->video_url)
-                    <a href="{{ route('movies.watch', $movie->slug) }}" class="btn-netflix inline-flex items-center gap-2 px-8 py-4 text-white font-bold rounded-lg text-base">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
-                        Play Movie
-                    </a>
-                    @endif
-                    <a href="{{ route('movies.index') }}" class="inline-flex items-center gap-2 px-6 py-4 bg-white/10 hover:bg-white/20 text-white font-medium rounded-lg text-sm backdrop-blur-sm transition-all">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-                        Back
-                    </a>
-                </div>
+                {{-- Details --}}
+                <div class="flex-1">
+                    <div class="flex items-center gap-3 mb-2 flex-wrap">
+                        <h1 class="text-3xl font-bold text-white">{{ $movie->title }}</h1>
+                        <span class="quality-badge">HD</span>
+                    </div>
 
-                {{-- Description --}}
-                @if($movie->description)
-                <div class="mb-8">
-                    <h3 class="text-white font-bold mb-3 text-lg">Synopsis</h3>
-                    <p class="text-gray-300 leading-relaxed max-w-3xl">{{ $movie->description }}</p>
-                </div>
-                @endif
+                    <div class="flex items-center gap-4 mb-4 flex-wrap">
+                        <div class="flex items-center gap-1 rating-stars">
+                            @php $stars = floor(($movie->rating ?? 0) / 2); @endphp
+                            @for($i=0; $i<5; $i++)
+                                <svg class="w-4 h-4 {{ $i < $stars ? 'fill-current' : 'text-zinc-700' }}" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            @endfor
+                            <span class="text-white font-bold ml-1">{{ $movie->rating ?? '0.0' }}</span>
+                        </div>
+                        <span class="text-zinc-500">|</span>
+                        <span class="text-zinc-400 text-sm">{{ $movie->release_year }}</span>
+                        <span class="text-zinc-500">|</span>
+                        <span class="text-zinc-400 text-sm">{{ $movie->duration }}</span>
+                    </div>
 
-                {{-- Details Grid --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
-                    @if($movie->director)
-                    <div class="bg-white/5 rounded-lg p-4 border border-white/5">
-                        <span class="text-gray-500 text-xs uppercase tracking-wider font-medium">Director</span>
-                        <p class="text-white font-semibold mt-1">{{ $movie->director }}</p>
+                    <div class="space-y-2 mb-6 text-sm">
+                        <div><span class="info-label">Sutradara:</span> <span class="info-value">{{ $movie->director ?? '-' }}</span></div>
+                        <div><span class="info-label">Pemain:</span> <span class="info-value">{{ $movie->cast ?? '-' }}</span></div>
+                        <div><span class="info-label">Kategori:</span> <span class="info-value text-red-500">{{ $movie->category ? $movie->category->name : '-' }}</span></div>
                     </div>
-                    @endif
-                    @if($movie->cast)
-                    <div class="bg-white/5 rounded-lg p-4 border border-white/5">
-                        <span class="text-gray-500 text-xs uppercase tracking-wider font-medium">Cast</span>
-                        <p class="text-white font-semibold mt-1">{{ $movie->cast }}</p>
+
+                    <div class="mt-6">
+                        <h3 class="text-white font-bold mb-2 uppercase text-xs tracking-widest border-l-4 border-red-600 pl-3">Sinopsis</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed">{{ $movie->description }}</p>
                     </div>
-                    @endif
-                    @if($movie->category)
-                    <div class="bg-white/5 rounded-lg p-4 border border-white/5">
-                        <span class="text-gray-500 text-xs uppercase tracking-wider font-medium">Genre</span>
-                        <p class="text-white font-semibold mt-1">{{ $movie->category->name }}</p>
+
+                    {{-- Gallery --}}
+                    <div class="mt-8">
+                        <div class="grid grid-cols-3 gap-4">
+                            @if($movie->backdrop)
+                                <div class="gallery-item"><img src="{{ asset('storage/' . $movie->backdrop) }}" class="w-full h-full object-cover"></div>
+                                <div class="gallery-item bg-zinc-800 flex items-center justify-center text-zinc-600 text-xs">Shot #2</div>
+                                <div class="gallery-item bg-zinc-800 flex items-center justify-center text-zinc-600 text-xs">Shot #3</div>
+                            @else
+                                <div class="gallery-item bg-zinc-800 flex items-center justify-center text-zinc-600 text-xs">Shot #1</div>
+                                <div class="gallery-item bg-zinc-800 flex items-center justify-center text-zinc-600 text-xs">Shot #2</div>
+                                <div class="gallery-item bg-zinc-800 flex items-center justify-center text-zinc-600 text-xs">Shot #3</div>
+                            @endif
+                        </div>
                     </div>
-                    @endif
-                    @if($movie->release_year)
-                    <div class="bg-white/5 rounded-lg p-4 border border-white/5">
-                        <span class="text-gray-500 text-xs uppercase tracking-wider font-medium">Year</span>
-                        <p class="text-white font-semibold mt-1">{{ $movie->release_year }}</p>
-                    </div>
-                    @endif
                 </div>
             </div>
-        </div>
+        </section>
+
+        {{-- Comment Section --}}
+        <section class="mt-12 bg-zinc-900/30 p-8 rounded-lg border border-zinc-800/50">
+            <h2 class="text-xl font-bold text-white mb-8 flex items-center gap-2">
+                <span class="w-1 h-6 bg-red-600"></span>
+                DISKUSI / KOMENTAR
+            </h2>
+
+            @if(session('success'))
+                <div class="bg-green-500/10 border border-green-500/50 text-green-500 px-4 py-3 rounded mb-6 text-sm">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <form action="{{ route('comments.store', $movie) }}" method="POST" class="comment-form mb-12">
+                @csrf
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <input type="text" name="name" placeholder="Nama Lengkap" required value="{{ old('name') }}">
+                        @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
+                    <div>
+                        <input type="email" name="email" placeholder="Email (Wajib)" required value="{{ old('email') }}">
+                        @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <input type="text" name="whatsapp" placeholder="Nomor WhatsApp (Wajib)" required value="{{ old('whatsapp') }}">
+                    @error('whatsapp') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
+                <div class="mb-6">
+                    <textarea name="content" rows="4" placeholder="Tulis komentar Anda..." required>{{ old('content') }}</textarea>
+                    @error('content') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="btn-submit">KIRIM KOMENTAR</button>
+                </div>
+            </form>
+
+            {{-- Display Comments --}}
+            <div class="space-y-6">
+                @forelse($movie->comments as $comment)
+                    <div class="flex gap-4 p-4 rounded bg-zinc-800/20 border border-zinc-800 text-sm">
+                        <div class="w-10 h-10 rounded-full bg-zinc-700 flex items-center justify-center text-zinc-400 font-bold">
+                            {{ substr($comment->name, 0, 1) }}
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="text-white font-bold">{{ $comment->name }}</h4>
+                                <span class="text-zinc-500 text-xs">{{ $comment->created_at->diffForHumans() }}</span>
+                            </div>
+                            <p class="text-zinc-400 leading-relaxed">{{ $comment->content }}</p>
+                        </div>
+                    </div>
+                @empty
+                    <p class="text-zinc-600 text-center py-8">Belum ada komentar. Jadilah yang pertama!</p>
+                @endforelse
+            </div>
+        </section>
+
+        {{-- Similar Movies --}}
+        @if($related->count())
+        <section class="py-12">
+            <h2 class="text-white font-bold mb-6 flex items-center gap-2">
+                <span class="w-1 h-6 bg-red-600"></span>
+                SIMILAR
+            </h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                @foreach($related as $rel)
+                <a href="{{ route('movies.show', $rel->slug) }}" class="group block">
+                    <div class="aspect-[2/3] rounded overflow-hidden relative mb-2 shadow-lg group-hover:ring-2 group-hover:ring-red-600 transition-all">
+                        @if($rel->poster)
+                            <img src="{{ asset('storage/' . $rel->poster) }}" class="w-full h-full object-cover">
+                        @else
+                            <div class="w-full h-full bg-zinc-800 flex items-center justify-center text-2xl">🎬</div>
+                        @endif
+                        <div class="absolute top-2 left-2 flex flex-col gap-1">
+                            @if($rel->rating)
+                                <div class="bg-black/80 text-[10px] text-white font-bold px-1 rounded flex items-center gap-0.5">
+                                    ⭐ {{ $rel->rating }}
+                                </div>
+                            @endif
+                            <div class="bg-red-600 text-[10px] text-white font-bold px-1 rounded">HD</div>
+                        </div>
+                    </div>
+                    <h4 class="text-zinc-200 text-xs font-bold line-clamp-2 text-center group-hover:text-red-500 transition-colors uppercase">{{ $rel->title }}</h4>
+                </a>
+                @endforeach
+            </div>
+        </section>
+        @endif
+
     </div>
-</section>
-
-{{-- Related Movies --}}
-@if($related->count())
-<section class="max-w-7xl mx-auto px-4 mt-16 mb-12">
-    <h2 class="text-xl font-bold text-white mb-6">More Like This</h2>
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        @foreach($related as $relatedMovie)
-        <a href="{{ route('movies.show', $relatedMovie->slug) }}" class="movie-card group rounded-lg overflow-hidden shadow-lg bg-netflix-gray">
-            <div class="aspect-[2/3] relative overflow-hidden">
-                @if($relatedMovie->poster)
-                    <img src="{{ asset('storage/' . $relatedMovie->poster) }}" alt="{{ $relatedMovie->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                @else
-                    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-netflix-red/20 to-netflix-dark">
-                        <span class="text-3xl">🎬</span>
-                    </div>
-                @endif
-            </div>
-            <div class="p-3">
-                <h3 class="text-white font-semibold text-sm truncate">{{ $relatedMovie->title }}</h3>
-                <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                    @if($relatedMovie->rating)<span class="text-green-400">⭐ {{ $relatedMovie->rating }}</span>@endif
-                    @if($relatedMovie->release_year)<span>{{ $relatedMovie->release_year }}</span>@endif
-                </div>
-            </div>
-        </a>
-        @endforeach
-    </div>
-</section>
-@endif
+</div>
 @endsection

@@ -33,6 +33,11 @@ class Movie extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->latest();
+    }
+
     /**
      * Get Google Drive embed URL from the video_url
      */

@@ -27,7 +27,7 @@
             </div>
             <p class="text-gray-300 text-sm md:text-base max-w-xl mb-6 line-clamp-3">{{ $featured->description }}</p>
             <div class="flex items-center gap-3">
-                <a href="{{ route('movies.watch', $featured->slug) }}" class="btn-netflix inline-flex items-center gap-2 px-6 py-3 text-white font-bold rounded-lg text-sm">
+                <a href="{{ route('movies.show', $featured->slug) }}" class="btn-netflix inline-flex items-center gap-2 px-6 py-3 text-white font-bold rounded-lg text-sm">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
                     Play Now
                 </a>

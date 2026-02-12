@@ -17,7 +17,7 @@ class MovieController extends Controller
 
     public function show($slug)
     {
-        $movie = Movie::where('slug', $slug)->with('category')->firstOrFail();
+        $movie = Movie::where('slug', $slug)->with(['category', 'comments'])->firstOrFail();
         $related = Movie::where('category_id', $movie->category_id)
             ->where('id', '!=', $movie->id)
             ->latest()
@@ -35,11 +35,5 @@ class MovieController extends Controller
             ->paginate(24);
         $categories = Category::withCount('movies')->get();
         return view('movies.index', compact('movies', 'categories', 'category'));
-    }
-
-    public function watch($slug)
-    {
-        $movie = Movie::where('slug', $slug)->firstOrFail();
-        return view('movies.watch', compact('movie'));
     }
 }
