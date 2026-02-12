@@ -140,7 +140,9 @@
                 <div class="flex-1">
                     <div class="flex items-center gap-3 mb-2 flex-wrap">
                         <h1 class="text-3xl font-bold text-white">{{ $movie->title }}</h1>
-                        <span class="quality-badge">HD</span>
+                        @if($movie->quality)
+                            <span class="quality-badge">{{ $movie->quality }}</span>
+                        @endif
                     </div>
 
                     <div class="flex items-center gap-4 mb-4 flex-wrap">

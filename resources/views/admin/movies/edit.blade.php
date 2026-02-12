@@ -3,10 +3,44 @@
 @section('title', 'Edit Movie')
 @section('page-title', 'Edit: ' . $movie->title)
 
+@push('styles')
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+<style>
+    .ql-container {
+        border-bottom-left-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+        background: #0f172a;
+        color: white;
+        font-family: inherit;
+    }
+    .ql-toolbar {
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+        background: #1e293b;
+        border-color: #334155 !important;
+    }
+    .ql-container.ql-snow {
+        border-color: #334155 !important;
+    }
+    .ql-editor.ql-blank::before {
+        color: #475569 !important;
+        font-style: normal;
+    }
+    .image-preview {
+        width: 100%;
+        max-height: 200px;
+        object-fit: cover;
+        border-radius: 0.5rem;
+        margin-top: 0.5rem;
+        border: 1px solid #334155;
+    }
+</style>
+@endpush
+
 @section('content')
-<div class="max-w-3xl">
-    <div class="bg-admin-card rounded-xl border border-admin-border p-6">
-        <form action="{{ route('admin.movies.update', $movie) }}" method="POST" enctype="multipart/form-data">
+<div class="max-w-4xl">
+    <div class="bg-admin-card rounded-xl border border-admin-border p-8">
+        <form action="{{ route('admin.movies.update', $movie) }}" method="POST" enctype="multipart/form-data" id="movieForm">
             @csrf @method('PUT')
 
             {{-- Title & Category --}}
@@ -14,12 +48,12 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Movie Title *</label>
                     <input type="text" name="title" value="{{ old('title', $movie->title) }}" placeholder="e.g. The Dark Knight"
-                        class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent" required>
+                        class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent transition-all" required>
                     @error('title')<p class="text-red-400 text-xs mt-1">{{ $message }}</p>@enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Category *</label>
-                    <select name="category_id" class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent" required>
+                    <select name="category_id" class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent transition-all" required>
                         <option value="">Select Category</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}" {{ old('category_id', $movie->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
@@ -29,98 +63,163 @@
                 </div>
             </div>
 
-            {{-- Description --}}
+            {{-- Description (Rich Text) --}}
             <div class="mb-6">
                 <label class="block text-sm font-medium text-gray-300 mb-2">Description</label>
-                <textarea name="description" rows="4" placeholder="Movie synopsis..."
-                    class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent resize-y">{{ old('description', $movie->description) }}</textarea>
+                <div id="editor" style="height: 200px;">{!! old('description', $movie->description) !!}</div>
+                <input type="hidden" name="description" id="description">
+                @error('description')<p class="text-red-400 text-xs mt-1">{{ $message }}</p>@enderror
             </div>
 
-            {{-- Video URL --}}
-            <div class="mb-6">
-                <label class="block text-sm font-medium text-gray-300 mb-2">
-                    Video URL (Google Drive)
-                </label>
-                <input type="text" name="video_url" value="{{ old('video_url', $movie->video_url) }}" placeholder="https://drive.google.com/file/d/xxx/view?usp=sharing"
-                    class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent">
-                <p class="text-xs text-gray-600 mt-1">💡 Paste Google Drive sharing link, it will be auto-converted for playback</p>
-            </div>
-
-            {{-- Current Images & Upload --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-2">Poster Image</label>
-                    @if($movie->poster)
-                        <div class="mb-2 relative inline-block">
-                            <img src="{{ asset('storage/' . $movie->poster) }}" class="w-24 h-36 object-cover rounded-lg border border-admin-border">
-                            <span class="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-admin-card"></span>
-                        </div>
-                    @endif
-                    <input type="file" name="poster" accept="image/*" class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-gray-400 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-sm file:bg-admin-accent file:text-white hover:file:bg-blue-600 file:cursor-pointer">
-                    <p class="text-xs text-gray-600 mt-1">Leave empty to keep current</p>
+            {{-- Video URL & Quality --}}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">
+                        Video URL (Google Drive)
+                    </label>
+                    <input type="text" name="video_url" value="{{ old('video_url', $movie->video_url) }}" placeholder="https://drive.google.com/file/d/xxx/view?usp=sharing"
+                        class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent transition-all">
+                    <p class="text-[10px] text-gray-500 mt-1 uppercase tracking-wider font-semibold">💡 Paste link share Google Drive, otomatis konversi ke embed</p>
+                    @error('video_url')<p class="text-red-400 text-xs mt-1">{{ $message }}</p>@enderror
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-2">Backdrop Image</label>
-                    @if($movie->backdrop)
-                        <div class="mb-2">
-                            <img src="{{ asset('storage/' . $movie->backdrop) }}" class="w-40 h-20 object-cover rounded-lg border border-admin-border">
-                        </div>
-                    @endif
-                    <input type="file" name="backdrop" accept="image/*" class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-gray-400 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-sm file:bg-admin-accent file:text-white hover:file:bg-blue-600 file:cursor-pointer">
-                    <p class="text-xs text-gray-600 mt-1">Leave empty to keep current</p>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Quality Badge</label>
+                    <select name="quality" class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent transition-all">
+                        <option value="HD" {{ old('quality', $movie->quality) == 'HD' ? 'selected' : '' }}>HD</option>
+                        <option value="4K" {{ old('quality', $movie->quality) == '4K' ? 'selected' : '' }}>4K Ultra HD</option>
+                        <option value="CAM" {{ old('quality', $movie->quality) == 'CAM' ? 'selected' : '' }}>CAM / TS</option>
+                        <option value="SD" {{ old('quality', $movie->quality) == 'SD' ? 'selected' : '' }}>SD</option>
+                    </select>
+                </div>
+            </div>
+
+            {{-- Images with resolution info and previews --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Poster Image</label>
+                    <p class="text-[10px] text-admin-accent uppercase tracking-tighter mb-2 font-bold">Rekomendasi: 600 x 900 px (Portrait 2:3)</p>
+                    <input type="file" name="poster" id="posterInput" accept="image/*" class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-gray-400 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-sm file:bg-admin-accent file:text-white hover:file:bg-blue-600 file:cursor-pointer transition-all">
+                    <div class="mt-2">
+                        @if($movie->poster)
+                            <img id="posterPreview" class="image-preview" src="{{ asset('storage/' . $movie->poster) }}" alt="Poster Preview">
+                        @else
+                            <img id="posterPreview" class="image-preview" style="display:none;" src="#" alt="Poster Preview">
+                        @endif
+                    </div>
+                    @error('poster')<p class="text-red-400 text-xs mt-1">{{ $message }}</p>@enderror
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Backdrop Image</label>
+                    <p class="text-[10px] text-admin-accent uppercase tracking-tighter mb-2 font-bold">Rekomendasi: 1280 x 720 px (Landscape 16:9)</p>
+                    <input type="file" name="backdrop" id="backdropInput" accept="image/*" class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-gray-400 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-sm file:bg-admin-accent file:text-white hover:file:bg-blue-600 file:cursor-pointer transition-all">
+                    <div class="mt-2">
+                        @if($movie->backdrop)
+                            <img id="backdropPreview" class="image-preview" src="{{ asset('storage/' . $movie->backdrop) }}" alt="Backdrop Preview">
+                        @else
+                            <img id="backdropPreview" class="image-preview" style="display:none;" src="#" alt="Backdrop Preview">
+                        @endif
+                    </div>
+                    @error('backdrop')<p class="text-red-400 text-xs mt-1">{{ $message }}</p>@enderror
                 </div>
             </div>
 
             {{-- Rating, Year, Duration --}}
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 border-t border-admin-border pt-6">
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Rating</label>
                     <input type="text" name="rating" value="{{ old('rating', $movie->rating) }}" placeholder="e.g. 8.5"
-                        class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent">
+                        class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent transition-all">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Release Year</label>
                     <input type="number" name="release_year" value="{{ old('release_year', $movie->release_year) }}" placeholder="e.g. 2024" min="1900" max="2099"
-                        class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent">
+                        class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent transition-all">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Duration</label>
                     <input type="text" name="duration" value="{{ old('duration', $movie->duration) }}" placeholder="e.g. 2h 30m"
-                        class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent">
+                        class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent transition-all">
                 </div>
             </div>
 
             {{-- Director & Cast --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Director</label>
                     <input type="text" name="director" value="{{ old('director', $movie->director) }}" placeholder="e.g. Christopher Nolan"
-                        class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent">
+                        class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent transition-all">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Cast</label>
                     <input type="text" name="cast" value="{{ old('cast', $movie->cast) }}" placeholder="e.g. Actor 1, Actor 2"
-                        class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent">
+                        class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-transparent transition-all">
                 </div>
             </div>
 
             {{-- Featured --}}
-            <div class="mb-8">
+            <div class="mb-8 p-4 bg-white/5 rounded-lg border border-admin-border">
                 <label class="flex items-center gap-3 cursor-pointer">
                     <input type="checkbox" name="is_featured" value="1" {{ old('is_featured', $movie->is_featured) ? 'checked' : '' }}
                         class="w-5 h-5 rounded bg-admin-bg border-admin-border text-admin-accent focus:ring-admin-accent">
-                    <span class="text-sm text-gray-300">Featured Movie (shown in hero section)</span>
+                    <span class="text-sm text-gray-300 font-semibold">Tandai sebagai Unggulan (Tampil di Hero Banner)</span>
                 </label>
             </div>
 
             {{-- Submit --}}
-            <div class="flex items-center gap-3">
-                <button type="submit" class="px-8 py-3 bg-admin-accent hover:bg-blue-600 text-white font-medium rounded-lg transition-colors">
+            <div class="flex items-center gap-4">
+                <button type="submit" class="px-10 py-3 bg-admin-accent hover:bg-blue-600 text-white font-bold rounded-lg transition-all shadow-lg hover:shadow-admin-accent/20">
                     Update Movie
                 </button>
-                <a href="{{ route('admin.movies.index') }}" class="px-6 py-3 bg-white/10 hover:bg-white/20 text-gray-300 rounded-lg transition-colors">Cancel</a>
+                <a href="{{ route('admin.movies.index') }}" class="px-6 py-3 bg-white/5 hover:bg-white/10 text-gray-400 rounded-lg transition-all">Batal</a>
             </div>
         </form>
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script>
+    // Initialize Quill
+    const quill = new Quill('#editor', {
+        theme: 'snow',
+        placeholder: 'Tulis sinopsis film di sini...',
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ['clean']
+            ]
+        }
+    });
+
+    // Sync content to hidden field before submit
+    const form = document.querySelector('#movieForm');
+    form.onsubmit = function() {
+        const description = document.querySelector('#description');
+        description.value = quill.root.innerHTML;
+        if(description.value === '<p><br></p>') description.value = '';
+    };
+
+    // Image Previews
+    function readURL(input, previewId) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById(previewId);
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    document.getElementById('posterInput').addEventListener('change', function() {
+        readURL(this, 'posterPreview');
+    });
+
+    document.getElementById('backdropInput').addEventListener('change', function() {
+        readURL(this, 'backdropPreview');
+    });
+</script>
+@endpush

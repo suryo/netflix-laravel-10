@@ -13,7 +13,7 @@ class Movie extends Model
     protected $fillable = [
         'category_id', 'title', 'slug', 'description', 'poster', 'backdrop',
         'video_url', 'is_featured', 'rating', 'release_year', 'duration', 
-        'director', 'cast'
+        'director', 'cast', 'quality'
     ];
 
     protected $casts = [

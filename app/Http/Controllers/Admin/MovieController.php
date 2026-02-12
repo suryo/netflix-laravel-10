@@ -38,6 +38,7 @@ class MovieController extends Controller
             'duration' => 'nullable|string',
             'director' => 'nullable|string',
             'cast' => 'nullable|string',
+            'quality' => 'nullable|string|max:10',
         ]);
 
         $data = $request->except(['poster', 'backdrop']);
@@ -77,6 +78,7 @@ class MovieController extends Controller
             'duration' => 'nullable|string',
             'director' => 'nullable|string',
             'cast' => 'nullable|string',
+            'quality' => 'nullable|string|max:10',
         ]);
 
         $data = $request->except(['poster', 'backdrop']);

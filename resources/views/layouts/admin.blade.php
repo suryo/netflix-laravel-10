@@ -24,6 +24,7 @@
         .sidebar-link { transition: all 0.2s; }
         .sidebar-link:hover, .sidebar-link.active { background: rgba(59,130,246,0.1); color: #3b82f6; border-right: 3px solid #3b82f6; }
     </style>
+    @stack('styles')
 </head>
 <body class="bg-admin-bg text-gray-300 min-h-screen">
     <div class="flex">
@@ -45,6 +46,10 @@
                 <a href="{{ route('admin.movies.index') }}" class="sidebar-link flex items-center gap-3 px-6 py-3 text-sm font-medium {{ request()->routeIs('admin.movies.*') ? 'active' : '' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"/></svg>
                     Movies
+                </a>
+                <a href="{{ route('admin.comments.index') }}" class="sidebar-link flex items-center gap-3 px-6 py-3 text-sm font-medium {{ request()->routeIs('admin.comments.*') ? 'active' : '' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                    Comments
                 </a>
                 <div class="border-t border-admin-border my-4"></div>
                 <a href="{{ route('home') }}" class="sidebar-link flex items-center gap-3 px-6 py-3 text-sm font-medium text-gray-500">
@@ -80,6 +85,8 @@
                         <a href="{{ route('admin.dashboard') }}" class="sidebar-link flex items-center gap-3 px-6 py-3 text-sm font-medium">Dashboard</a>
                         <a href="{{ route('admin.categories.index') }}" class="sidebar-link flex items-center gap-3 px-6 py-3 text-sm font-medium">Categories</a>
                         <a href="{{ route('admin.movies.index') }}" class="sidebar-link flex items-center gap-3 px-6 py-3 text-sm font-medium">Movies</a>
+                        <a href="{{ route('admin.comments.index') }}" class="sidebar-link flex items-center gap-3 px-6 py-3 text-sm font-medium">Comments</a>
+
                         <a href="{{ route('home') }}" class="sidebar-link flex items-center gap-3 px-6 py-3 text-sm font-medium text-gray-500">View Site</a>
                     </nav>
                 </div>
@@ -104,5 +111,6 @@
             </div>
         </div>
     </div>
+    @stack('scripts')
 </body>
 </html>

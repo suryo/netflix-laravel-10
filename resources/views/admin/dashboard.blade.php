@@ -40,6 +40,19 @@
                 <svg class="w-6 h-6 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
             </div>
         </div>
+        <p class="text-xs text-gray-500 mt-3 inline-block">Active highlights</p>
+    </div>
+    <div class="bg-admin-card rounded-xl p-6 border border-admin-border hover:border-purple-500/30 transition-colors">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-gray-500 text-sm font-medium">Total Comments</p>
+                <h3 class="text-3xl font-bold text-white mt-1">{{ $totalComments }}</h3>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center">
+                <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+            </div>
+        </div>
+        <a href="{{ route('admin.comments.index') }}" class="text-xs text-purple-500 hover:underline mt-3 inline-block">Manage all →</a>
     </div>
 </div>
 
