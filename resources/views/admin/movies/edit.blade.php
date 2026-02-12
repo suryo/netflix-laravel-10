@@ -109,7 +109,7 @@
                     @error('poster')<p class="text-red-400 text-xs mt-1">{{ $message }}</p>@enderror
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-1">Backdrop Image</label>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Banner / Backdrop Image</label>
                     <p class="text-[10px] text-admin-accent uppercase tracking-tighter mb-2 font-bold">Rekomendasi: 1280 x 720 px (Landscape 16:9)</p>
                     <input type="file" name="backdrop" id="backdropInput" accept="image/*" class="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-3 text-gray-400 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-sm file:bg-admin-accent file:text-white hover:file:bg-blue-600 file:cursor-pointer transition-all">
                     <div class="mt-2">
@@ -156,13 +156,21 @@
                 </div>
             </div>
 
-            {{-- Featured --}}
-            <div class="mb-8 p-4 bg-white/5 rounded-lg border border-admin-border">
-                <label class="flex items-center gap-3 cursor-pointer">
-                    <input type="checkbox" name="is_featured" value="1" {{ old('is_featured', $movie->is_featured) ? 'checked' : '' }}
-                        class="w-5 h-5 rounded bg-admin-bg border-admin-border text-admin-accent focus:ring-admin-accent">
-                    <span class="text-sm text-gray-300 font-semibold">Tandai sebagai Unggulan (Tampil di Hero Banner)</span>
-                </label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="p-4 bg-white/5 rounded-lg border border-admin-border hover:border-admin-accent/30 transition-colors">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" name="is_featured" value="1" {{ old('is_featured', $movie->is_featured) ? 'checked' : '' }}
+                            class="w-5 h-5 rounded bg-admin-bg border-admin-border text-admin-accent focus:ring-admin-accent">
+                        <span class="text-sm text-gray-300 font-semibold">Tandai sebagai Unggulan (Tampil di Hero Banner)</span>
+                    </label>
+                </div>
+                <div class="p-4 bg-white/5 rounded-lg border border-admin-border hover:border-admin-accent/30 transition-colors">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" name="is_slider" value="1" {{ old('is_slider', $movie->is_slider) ? 'checked' : '' }}
+                            class="w-5 h-5 rounded bg-admin-bg border-admin-border text-admin-accent focus:ring-admin-accent">
+                        <span class="text-sm text-gray-300 font-semibold">Tampilkan di Slider Landing Page</span>
+                    </label>
+                </div>
             </div>
 
             {{-- Submit --}}

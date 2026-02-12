@@ -33,6 +33,7 @@ class MovieController extends Controller
             'backdrop' => 'nullable|image|max:4096',
             'video_url' => 'nullable|string',
             'is_featured' => 'nullable|boolean',
+            'is_slider' => 'nullable|boolean',
             'rating' => 'nullable|string',
             'release_year' => 'nullable|integer|min:1900|max:2099',
             'duration' => 'nullable|string',
@@ -44,6 +45,7 @@ class MovieController extends Controller
         $data = $request->except(['poster', 'backdrop']);
         $data['slug'] = Str::slug($request->title);
         $data['is_featured'] = $request->has('is_featured');
+        $data['is_slider'] = $request->has('is_slider');
 
         if ($request->hasFile('poster')) {
             $data['poster'] = $request->file('poster')->store('movies/posters', 'public');
@@ -73,6 +75,7 @@ class MovieController extends Controller
             'backdrop' => 'nullable|image|max:4096',
             'video_url' => 'nullable|string',
             'is_featured' => 'nullable|boolean',
+            'is_slider' => 'nullable|boolean',
             'rating' => 'nullable|string',
             'release_year' => 'nullable|integer|min:1900|max:2099',
             'duration' => 'nullable|string',
@@ -84,6 +87,7 @@ class MovieController extends Controller
         $data = $request->except(['poster', 'backdrop']);
         $data['slug'] = Str::slug($request->title);
         $data['is_featured'] = $request->has('is_featured');
+        $data['is_slider'] = $request->has('is_slider');
 
         if ($request->hasFile('poster')) {
             if ($movie->poster) Storage::disk('public')->delete($movie->poster);

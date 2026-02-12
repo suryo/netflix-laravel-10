@@ -11,12 +11,13 @@ class HomeController extends Controller
     public function index()
     {
         $featured = Movie::where('is_featured', true)->latest()->first();
+        $sliders = Movie::where('is_slider', true)->latest()->get();
         $categories = Category::with(['movies' => function ($q) {
             $q->orderBy('release_year', 'desc')->take(12);
         }])->get();
         $latestMovies = Movie::latest()->take(12)->get();
 
-        return view('home', compact('featured', 'categories', 'latestMovies'));
+        return view('home', compact('featured', 'sliders', 'categories', 'latestMovies'));
     }
 
     public function search(Request $request)

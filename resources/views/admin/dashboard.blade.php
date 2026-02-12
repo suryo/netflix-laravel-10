@@ -73,6 +73,7 @@
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Category</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Rating</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Year</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Slider</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Featured</th>
                 </tr>
             </thead>
@@ -95,7 +96,14 @@
                         <span class="text-xs bg-white/10 text-gray-300 px-2 py-1 rounded">{{ $movie->category->name ?? '-' }}</span>
                     </td>
                     <td class="px-6 py-4 text-sm">{{ $movie->rating ?? '-' }}</td>
-                    <td class="px-6 py-4 text-sm">{{ $movie->release_year ?? '-' }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-400">{{ $movie->release_year ?? '-' }}</td>
+                    <td class="px-6 py-4">
+                        @if($movie->is_slider)
+                            <span class="text-blue-400 text-xs font-bold px-2 py-0.5 bg-blue-500/10 rounded-full italic">BANNER</span>
+                        @else
+                            <span class="text-gray-500 text-xs">-</span>
+                        @endif
+                    </td>
                     <td class="px-6 py-4">
                         @if($movie->is_featured)
                             <span class="text-amber-400">★</span>

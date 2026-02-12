@@ -20,9 +20,8 @@
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Movie</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Category</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Rating</th>
-                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Year</th>
-                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Video</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Views</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Slider</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Featured</th>
                     <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
@@ -52,16 +51,15 @@
                     <td class="px-6 py-4 text-sm">
                         @if($movie->rating)<span class="text-green-400">⭐ {{ $movie->rating }}</span>@else <span class="text-gray-600">-</span> @endif
                     </td>
-                    <td class="px-6 py-4 text-sm">{{ $movie->release_year ?? '-' }}</td>
-                    <td class="px-6 py-4">
-                        @if($movie->video_url)
-                            <span class="text-green-400 text-xs font-medium bg-green-500/10 px-2 py-1 rounded-full">✓ Has Video</span>
-                        @else
-                            <span class="text-gray-600 text-xs">No video</span>
-                        @endif
-                    </td>
                     <td class="px-6 py-4 text-sm font-medium text-gray-300">
                         {{ number_format($movie->views) }}
+                    </td>
+                    <td class="px-6 py-4">
+                        @if($movie->is_slider)
+                            <span class="text-blue-400 text-xs font-bold px-2 py-1 bg-blue-500/10 rounded-full">SLIDER</span>
+                        @else
+                            <span class="text-gray-600">-</span>
+                        @endif
                     </td>
                     <td class="px-6 py-4">
                         @if($movie->is_featured)
