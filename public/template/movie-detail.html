@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Netflixku – The Dark Knight</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="css/style.css" />
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            netflix: {
+                                red: "#E50914",
+                                dark: "#141414",
+                                darker: "#0a0a0a",
+                                gray: "#1a1a1a",
+                                light: "#e5e5e5",
+                            },
+                        },
+                    },
+                },
+            };
+        </script>
+    </head>
+    <body class="min-h-screen">
+        <!-- NAVBAR -->
+        <nav class="glass-nav" id="navbar">
+            <div
+                class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16"
+            >
+                <a
+                    href="index.html"
+                    class="text-red-600 font-black text-2xl tracking-wider"
+                    >NETFLIXKU</a
+                >
+                <div class="hidden md:flex items-center space-x-6">
+                    <a
+                        href="index.html"
+                        class="text-sm text-gray-300 hover:text-white"
+                        >Home</a
+                    >
+                    <a href="movies.html" class="text-sm font-bold text-white"
+                        >Movies</a
+                    >
+                    <a
+                        href="tv-online.html"
+                        class="text-sm text-gray-300 hover:text-white"
+                        >TV Online</a
+                    >
+                    <a
+                        href="radio-online.html"
+                        class="text-sm text-gray-300 hover:text-white"
+                        >Radio Online</a
+                    >
+                </div>
+                <a
+                    href="login.html"
+                    class="text-sm text-white hover:text-red-500"
+                    >Sign In</a
+                >
+            </div>
+        </nav>
+
+        <!-- MOVIE PLAYER SECTION -->
+        <main class="pt-16">
+            <!-- Video Player -->
+            <div class="relative w-full bg-black" style="padding-top: 56.25%">
+                <!-- Placeholder player frame -->
+                <div
+                    class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-900 to-black"
+                >
+                    <div class="text-center">
+                        <button
+                            class="w-20 h-20 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full flex items-center justify-center mx-auto mb-4 transition-all hover:scale-110"
+                        >
+                            <svg
+                                class="w-10 h-10 text-white ml-1"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                        </button>
+                        <p class="text-gray-400 text-sm">
+                            [ Embedded Video Player ]
+                        </p>
+                        <p class="text-gray-600 text-xs mt-1">
+                            Google Drive / HLS / YouTube
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Movie Info -->
+            <div class="max-w-7xl mx-auto px-4 md:px-12 py-12">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                    <!-- Main Info -->
+                    <div class="lg:col-span-8">
+                        <!-- Title & Badges -->
+                        <div class="flex flex-wrap items-center gap-3 mb-4">
+                            <span class="category-badge">Action</span>
+                            <span
+                                class="category-badge"
+                                style="
+                                    background: rgba(0, 120, 255, 0.1);
+                                    color: #60a5fa;
+                                    border-color: rgba(0, 120, 255, 0.2);
+                                "
+                                >Crime</span
+                            >
+                            <span
+                                class="text-gray-500 text-xs font-bold uppercase tracking-widest"
+                                >2008 • 152 min</span
+                            >
+                        </div>
+                        <h1
+                            class="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter uppercase italic"
+                        >
+                            The Dark Knight
+                        </h1>
+                        <p class="text-gray-400 text-base leading-relaxed mb-8">
+                            When the menace known as the Joker wreaks havoc and
+                            chaos on the people of Gotham, Batman must accept
+                            one of the greatest psychological and physical tests
+                            of his ability to fight injustice.
+                        </p>
+
+                        <!-- Action Buttons -->
+                        <div class="flex flex-wrap gap-4 mb-10">
+                            <button
+                                class="btn-netflix px-8 py-3 rounded-full text-sm font-black uppercase tracking-wider flex items-center gap-2"
+                            >
+                                <svg
+                                    class="w-5 h-5"
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path d="M8 5v14l11-7z" />
+                                </svg>
+                                Mulai Tonton
+                            </button>
+                            <button
+                                onclick="copyToClipboard()"
+                                class="px-8 py-3 rounded-full text-sm font-black uppercase tracking-wider bg-white/10 hover:bg-white/20 text-white transition-all border border-white/10 flex items-center gap-2"
+                            >
+                                <svg
+                                    class="w-5 h-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                                    />
+                                </svg>
+                                Bagikan
+                            </button>
+                        </div>
+
+                        <!-- Meta Info -->
+                        <div
+                            class="grid grid-cols-2 md:grid-cols-3 gap-6 mb-10 p-6 bg-white/3 border border-white/5 rounded-2xl"
+                        >
+                            <div>
+                                <p
+                                    class="text-gray-500 text-xs uppercase tracking-widest mb-1"
+                                >
+                                    Sutradara
+                                </p>
+                                <p class="text-white font-bold text-sm">
+                                    Christopher Nolan
+                                </p>
+                            </div>
+                            <div>
+                                <p
+                                    class="text-gray-500 text-xs uppercase tracking-widest mb-1"
+                                >
+                                    Tahun
+                                </p>
+                                <p class="text-white font-bold text-sm">2008</p>
+                            </div>
+                            <div>
+                                <p
+                                    class="text-gray-500 text-xs uppercase tracking-widest mb-1"
+                                >
+                                    Durasi
+                                </p>
+                                <p class="text-white font-bold text-sm">
+                                    152 Menit
+                                </p>
+                            </div>
+                            <div>
+                                <p
+                                    class="text-gray-500 text-xs uppercase tracking-widest mb-1"
+                                >
+                                    Rating
+                                </p>
+                                <p class="text-yellow-400 font-bold text-sm">
+                                    ★ 9.0 / 10
+                                </p>
+                            </div>
+                            <div>
+                                <p
+                                    class="text-gray-500 text-xs uppercase tracking-widest mb-1"
+                                >
+                                    Bahasa
+                                </p>
+                                <p class="text-white font-bold text-sm">
+                                    English
+                                </p>
+                            </div>
+                            <div>
+                                <p
+                                    class="text-gray-500 text-xs uppercase tracking-widest mb-1"
+                                >
+                                    Status
+                                </p>
+                                <p class="text-green-400 font-bold text-sm">
+                                    Released
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Comments Section -->
+                        <div>
+                            <h2
+                                class="text-xl font-black text-white uppercase italic tracking-tight mb-6 flex items-center gap-3"
+                            >
+                                <span
+                                    class="w-1 h-6 bg-red-600 rounded-full inline-block"
+                                ></span>
+                                Komentar
+                            </h2>
+                            <!-- Comment Form -->
+                            <div class="mb-8 p-6 glass-card">
+                                <textarea
+                                    class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white text-sm resize-none focus:outline-none focus:border-red-600 transition"
+                                    rows="3"
+                                    placeholder="Tulis komentar Anda..."
+                                ></textarea>
+                                <div class="flex justify-end mt-3">
+                                    <button
+                                        class="btn-netflix px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest"
+                                    >
+                                        Kirim
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Sample Comments -->
+                            <div class="space-y-5">
+                                <div
+                                    class="flex gap-4 p-5 glass-card rounded-2xl"
+                                >
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center font-bold text-white flex-shrink-0"
+                                    >
+                                        U
+                                    </div>
+                                    <div>
+                                        <p class="text-white font-bold text-sm">
+                                            User123
+                                        </p>
+                                        <p class="text-gray-500 text-xs mb-2">
+                                            2 jam yang lalu
+                                        </p>
+                                        <p class="text-gray-300 text-sm">
+                                            Film terbaik sepanjang masa! Heath
+                                            Ledger sebagai Joker luar biasa!
+                                        </p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex gap-4 p-5 glass-card rounded-2xl"
+                                >
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white flex-shrink-0"
+                                    >
+                                        A
+                                    </div>
+                                    <div>
+                                        <p class="text-white font-bold text-sm">
+                                            AlphaUser
+                                        </p>
+                                        <p class="text-gray-500 text-xs mb-2">
+                                            5 jam yang lalu
+                                        </p>
+                                        <p class="text-gray-300 text-sm">
+                                            Wajib ditonton berulang kali.
+                                            Klasik!
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="lg:col-span-4">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span
+                                class="w-6 h-1 bg-red-600 rounded-full"
+                            ></span>
+                            <h2
+                                class="text-lg font-black text-white uppercase italic tracking-tight"
+                            >
+                                Film Terkait
+                            </h2>
+                        </div>
+                        <div class="space-y-4">
+                            <a
+                                href="movie-detail.html"
+                                class="flex gap-4 p-4 glass-card rounded-2xl group"
+                            >
+                                <img
+                                    src="https://placehold.co/80x120/1a1a1a/e50914?text=R1"
+                                    class="w-16 h-24 object-cover rounded-lg flex-shrink-0"
+                                />
+                                <div>
+                                    <p
+                                        class="text-white font-black text-sm group-hover:text-red-500 transition uppercase italic"
+                                    >
+                                        Batman Begins
+                                    </p>
+                                    <p class="text-gray-500 text-xs mt-1">
+                                        2005 • Action
+                                    </p>
+                                </div>
+                            </a>
+                            <a
+                                href="movie-detail.html"
+                                class="flex gap-4 p-4 glass-card rounded-2xl group"
+                            >
+                                <img
+                                    src="https://placehold.co/80x120/1a1a1a/0055ff?text=R2"
+                                    class="w-16 h-24 object-cover rounded-lg flex-shrink-0"
+                                />
+                                <div>
+                                    <p
+                                        class="text-white font-black text-sm group-hover:text-red-500 transition uppercase italic"
+                                    >
+                                        Inception
+                                    </p>
+                                    <p class="text-gray-500 text-xs mt-1">
+                                        2010 • Sci-Fi
+                                    </p>
+                                </div>
+                            </a>
+                            <a
+                                href="movie-detail.html"
+                                class="flex gap-4 p-4 glass-card rounded-2xl group"
+                            >
+                                <img
+                                    src="https://placehold.co/80x120/1a1a1a/990000?text=R3"
+                                    class="w-16 h-24 object-cover rounded-lg flex-shrink-0"
+                                />
+                                <div>
+                                    <p
+                                        class="text-white font-black text-sm group-hover:text-red-500 transition uppercase italic"
+                                    >
+                                        Interstellar
+                                    </p>
+                                    <p class="text-gray-500 text-xs mt-1">
+                                        2014 • Sci-Fi
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <script src="js/main.js"></script>
+    </body>
+</html>

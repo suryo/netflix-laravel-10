@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Admin – Manage Movies – Netflixku</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="css/style.css" />
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            netflix: {
+                                red: "#E50914",
+                                dark: "#141414",
+                                darker: "#0a0a0a",
+                                gray: "#1a1a1a",
+                                light: "#e5e5e5",
+                            },
+                        },
+                    },
+                },
+            };
+        </script>
+    </head>
+    <body class="min-h-screen">
+        <!-- ADMIN SIDEBAR (same as dashboard) -->
+        <aside class="admin-sidebar flex flex-col">
+            <div class="p-6 border-b border-white/5">
+                <a
+                    href="index.html"
+                    class="text-red-600 font-black text-xl tracking-wider"
+                    >NETFLIXKU</a
+                >
+                <p class="text-gray-600 text-xs mt-1 uppercase tracking-widest">
+                    Admin Panel
+                </p>
+            </div>
+            <nav class="flex-1 p-4">
+                <p
+                    class="text-gray-600 text-[10px] font-black uppercase tracking-[0.2em] mb-3 px-3"
+                >
+                    Main Menu
+                </p>
+                <a href="admin-dashboard.html" class="admin-nav-item">
+                    <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                        />
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="admin-movies.html" class="admin-nav-item active">
+                    <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"
+                        />
+                    </svg>
+                    Movies
+                </a>
+                <a href="admin-movies.html" class="admin-nav-item">
+                    <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                        />
+                    </svg>
+                    Categories
+                </a>
+                <a href="admin-movies.html" class="admin-nav-item">
+                    <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                        />
+                    </svg>
+                    Users
+                </a>
+                <div class="border-t border-white/5 mt-4 pt-4">
+                    <a href="index.html" class="admin-nav-item">
+                        <svg
+                            class="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M15 19l-7-7 7-7"
+                            />
+                        </svg>
+                        Kembali ke Site
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="admin-content">
+            <!-- Header -->
+            <header
+                class="sticky top-0 z-30 bg-[#0a0a0a]/90 backdrop-blur-xl border-b border-white/5 px-8 py-4 flex items-center justify-between"
+            >
+                <div>
+                    <h1
+                        class="text-xl font-black text-white uppercase italic tracking-tight"
+                    >
+                        Manage Movies
+                    </h1>
+                    <p class="text-gray-600 text-xs">142 film terdaftar</p>
+                </div>
+                <a
+                    href="#"
+                    class="btn-netflix px-5 py-2.5 rounded-xl text-sm font-black uppercase tracking-wider flex items-center gap-2"
+                >
+                    <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 4v16m8-8H4"
+                        />
+                    </svg>
+                    Tambah Film
+                </a>
+            </header>
+
+            <main class="p-8">
+                <!-- Filter & Search -->
+                <div class="flex flex-wrap items-center gap-4 mb-8">
+                    <input
+                        type="text"
+                        placeholder="Cari film..."
+                        class="search-input py-2.5 px-5 rounded-xl text-white placeholder-gray-600 text-sm w-72"
+                    />
+                    <select
+                        class="search-input py-2.5 px-4 rounded-xl text-gray-300 text-sm bg-transparent"
+                    >
+                        <option value="">Semua Kategori</option>
+                        <option>Action</option>
+                        <option>Drama</option>
+                        <option>Comedy</option>
+                        <option>Horror</option>
+                    </select>
+                    <select
+                        class="search-input py-2.5 px-4 rounded-xl text-gray-300 text-sm bg-transparent"
+                    >
+                        <option value="">Semua Status</option>
+                        <option>Active</option>
+                        <option>Inactive</option>
+                    </select>
+                </div>
+
+                <!-- Table -->
+                <div class="glass-card rounded-2xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-white/5">
+                                    <th
+                                        class="text-left px-6 py-4 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]"
+                                    >
+                                        #
+                                    </th>
+                                    <th
+                                        class="text-left px-6 py-4 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]"
+                                    >
+                                        Film
+                                    </th>
+                                    <th
+                                        class="text-left px-6 py-4 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]"
+                                    >
+                                        Kategori
+                                    </th>
+                                    <th
+                                        class="text-left px-6 py-4 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]"
+                                    >
+                                        Tahun
+                                    </th>
+                                    <th
+                                        class="text-left px-6 py-4 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]"
+                                    >
+                                        Views
+                                    </th>
+                                    <th
+                                        class="text-left px-6 py-4 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]"
+                                    >
+                                        Status
+                                    </th>
+                                    <th
+                                        class="text-left px-6 py-4 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]"
+                                    >
+                                        Aksi
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Row 1 -->
+                                <tr
+                                    class="border-b border-white/5 hover:bg-white/3 transition group"
+                                >
+                                    <td class="px-6 py-4 text-gray-600 text-sm">
+                                        1
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-4">
+                                            <img
+                                                src="https://placehold.co/60x90/1a1a1a/e50914?text=M"
+                                                class="w-10 h-14 object-cover rounded-lg"
+                                            />
+                                            <div>
+                                                <p
+                                                    class="text-white font-bold text-sm"
+                                                >
+                                                    The Dark Knight
+                                                </p>
+                                                <p
+                                                    class="text-gray-500 text-xs"
+                                                >
+                                                    Christopher Nolan
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="category-badge"
+                                            >Action</span
+                                        >
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-400 text-sm">
+                                        2008
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 text-gray-300 text-sm font-bold"
+                                    >
+                                        12.4K
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="text-xs font-black bg-green-400/10 text-green-400 px-3 py-1 rounded-full"
+                                            >Active</span
+                                        >
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-2">
+                                            <a
+                                                href="movie-detail.html"
+                                                class="p-2 bg-blue-600/10 text-blue-400 hover:bg-blue-600/20 rounded-lg transition"
+                                                title="View"
+                                            >
+                                                <svg
+                                                    class="w-4 h-4"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                                    />
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                                    />
+                                                </svg>
+                                            </a>
+                                            <button
+                                                class="p-2 bg-yellow-600/10 text-yellow-400 hover:bg-yellow-600/20 rounded-lg transition"
+                                                title="Edit"
+                                            >
+                                                <svg
+                                                    class="w-4 h-4"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                    />
+                                                </svg>
+                                            </button>
+                                            <button
+                                                class="p-2 bg-red-600/10 text-red-400 hover:bg-red-600/20 rounded-lg transition"
+                                                title="Delete"
+                                            >
+                                                <svg
+                                                    class="w-4 h-4"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                    />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Row 2 -->
+                                <tr
+                                    class="border-b border-white/5 hover:bg-white/3 transition"
+                                >
+                                    <td class="px-6 py-4 text-gray-600 text-sm">
+                                        2
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-4">
+                                            <img
+                                                src="https://placehold.co/60x90/1a1a1a/0055ff?text=I"
+                                                class="w-10 h-14 object-cover rounded-lg"
+                                            />
+                                            <div>
+                                                <p
+                                                    class="text-white font-bold text-sm"
+                                                >
+                                                    Inception
+                                                </p>
+                                                <p
+                                                    class="text-gray-500 text-xs"
+                                                >
+                                                    Christopher Nolan
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="category-badge"
+                                            style="
+                                                background: rgba(
+                                                    0,
+                                                    100,
+                                                    255,
+                                                    0.1
+                                                );
+                                                color: #60a5fa;
+                                                border-color: rgba(
+                                                    0,
+                                                    100,
+                                                    255,
+                                                    0.2
+                                                );
+                                            "
+                                            >Sci-Fi</span
+                                        >
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-400 text-sm">
+                                        2010
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 text-gray-300 text-sm font-bold"
+                                    >
+                                        9.8K
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="text-xs font-black bg-green-400/10 text-green-400 px-3 py-1 rounded-full"
+                                            >Active</span
+                                        >
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-2">
+                                            <a
+                                                href="movie-detail.html"
+                                                class="p-2 bg-blue-600/10 text-blue-400 hover:bg-blue-600/20 rounded-lg transition"
+                                                ><svg
+                                                    class="w-4 h-4"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                                    />
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                                    /></svg
+                                            ></a>
+                                            <button
+                                                class="p-2 bg-yellow-600/10 text-yellow-400 hover:bg-yellow-600/20 rounded-lg transition"
+                                            >
+                                                <svg
+                                                    class="w-4 h-4"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                    />
+                                                </svg>
+                                            </button>
+                                            <button
+                                                class="p-2 bg-red-600/10 text-red-400 hover:bg-red-600/20 rounded-lg transition"
+                                            >
+                                                <svg
+                                                    class="w-4 h-4"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                    />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Row 3 -->
+                                <tr class="hover:bg-white/3 transition">
+                                    <td class="px-6 py-4 text-gray-600 text-sm">
+                                        3
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-4">
+                                            <img
+                                                src="https://placehold.co/60x90/1a1a1a/cc6600?text=P"
+                                                class="w-10 h-14 object-cover rounded-lg"
+                                            />
+                                            <div>
+                                                <p
+                                                    class="text-white font-bold text-sm"
+                                                >
+                                                    Parasite
+                                                </p>
+                                                <p
+                                                    class="text-gray-500 text-xs"
+                                                >
+                                                    Bong Joon-ho
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="category-badge"
+                                            style="
+                                                background: rgba(
+                                                    150,
+                                                    100,
+                                                    0,
+                                                    0.1
+                                                );
+                                                color: #d97706;
+                                                border-color: rgba(
+                                                    150,
+                                                    100,
+                                                    0,
+                                                    0.2
+                                                );
+                                            "
+                                            >Drama</span
+                                        >
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-400 text-sm">
+                                        2019
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 text-gray-300 text-sm font-bold"
+                                    >
+                                        7.2K
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="text-xs font-black bg-yellow-400/10 text-yellow-400 px-3 py-1 rounded-full"
+                                            >Pending</span
+                                        >
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-2">
+                                            <a
+                                                href="movie-detail.html"
+                                                class="p-2 bg-blue-600/10 text-blue-400 hover:bg-blue-600/20 rounded-lg transition"
+                                                ><svg
+                                                    class="w-4 h-4"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                                    />
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                                    /></svg
+                                            ></a>
+                                            <button
+                                                class="p-2 bg-yellow-600/10 text-yellow-400 hover:bg-yellow-600/20 rounded-lg transition"
+                                            >
+                                                <svg
+                                                    class="w-4 h-4"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                    />
+                                                </svg>
+                                            </button>
+                                            <button
+                                                class="p-2 bg-red-600/10 text-red-400 hover:bg-red-600/20 rounded-lg transition"
+                                            >
+                                                <svg
+                                                    class="w-4 h-4"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                    />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination -->
+                    <div
+                        class="px-6 py-4 border-t border-white/5 flex items-center justify-between"
+                    >
+                        <p class="text-gray-500 text-xs">
+                            Menampilkan 1-3 dari 142 film
+                        </p>
+                        <div class="flex gap-1">
+                            <button
+                                class="w-8 h-8 rounded-lg bg-red-600/20 text-red-400 text-xs font-bold"
+                            >
+                                1
+                            </button>
+                            <button
+                                class="w-8 h-8 rounded-lg bg-white/5 text-gray-400 text-xs hover:bg-white/10 transition"
+                            >
+                                2
+                            </button>
+                            <button
+                                class="w-8 h-8 rounded-lg bg-white/5 text-gray-400 text-xs hover:bg-white/10 transition"
+                            >
+                                3
+                            </button>
+                            <span
+                                class="w-8 h-8 flex items-center justify-center text-gray-600 text-xs"
+                                >…</span
+                            >
+                            <button
+                                class="w-8 h-8 rounded-lg bg-white/5 text-gray-400 text-xs hover:bg-white/10 transition"
+                            >
+                                12
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <script src="js/main.js"></script>
+    </body>
+</html>

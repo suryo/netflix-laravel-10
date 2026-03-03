@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Admin Dashboard – Netflixku</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="css/style.css" />
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            netflix: {
+                                red: "#E50914",
+                                dark: "#141414",
+                                darker: "#0a0a0a",
+                                gray: "#1a1a1a",
+                                light: "#e5e5e5",
+                            },
+                        },
+                    },
+                },
+            };
+        </script>
+    </head>
+    <body class="min-h-screen">
+        <!-- ════════ ADMIN SIDEBAR ════════ -->
+        <aside id="admin-sidebar" class="admin-sidebar flex flex-col">
+            <!-- Logo -->
+            <div class="p-6 border-b border-white/5">
+                <a
+                    href="index.html"
+                    class="text-red-600 font-black text-xl tracking-wider"
+                    >NETFLIXKU</a
+                >
+                <p class="text-gray-600 text-xs mt-1 uppercase tracking-widest">
+                    Admin Panel
+                </p>
+            </div>
+            <!-- Nav -->
+            <nav class="flex-1 p-4">
+                <p
+                    class="text-gray-600 text-[10px] font-black uppercase tracking-[0.2em] mb-3 px-3"
+                >
+                    Main Menu
+                </p>
+                <a href="admin-dashboard.html" class="admin-nav-item active">
+                    <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                        />
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="admin-movies.html" class="admin-nav-item">
+                    <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"
+                        />
+                    </svg>
+                    Movies
+                </a>
+                <a href="admin-movies.html" class="admin-nav-item">
+                    <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M15 10l4.553-2.069A1 1 0 0121 8.876V15.124a1 1 0 01-1.447.895L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                        />
+                    </svg>
+                    TV Series
+                </a>
+                <a href="admin-movies.html" class="admin-nav-item">
+                    <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                        />
+                    </svg>
+                    Categories
+                </a>
+                <a href="admin-movies.html" class="admin-nav-item">
+                    <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                        />
+                    </svg>
+                    Users
+                </a>
+                <a href="admin-movies.html" class="admin-nav-item">
+                    <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"
+                        />
+                    </svg>
+                    TV Online
+                </a>
+                <a href="admin-movies.html" class="admin-nav-item">
+                    <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+                        />
+                    </svg>
+                    Radio Stations
+                </a>
+                <div class="border-t border-white/5 mt-4 pt-4">
+                    <a href="index.html" class="admin-nav-item">
+                        <svg
+                            class="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M15 19l-7-7 7-7"
+                            />
+                        </svg>
+                        Kembali ke Site
+                    </a>
+                    <a href="login.html" class="admin-nav-item text-red-500">
+                        <svg
+                            class="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                            />
+                        </svg>
+                        Sign Out
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- ════════ MAIN CONTENT ════════ -->
+        <div class="admin-content">
+            <!-- Header -->
+            <header
+                class="sticky top-0 z-30 bg-[#0a0a0a]/90 backdrop-blur-xl border-b border-white/5 px-8 py-4 flex items-center justify-between"
+            >
+                <div>
+                    <h1
+                        class="text-xl font-black text-white uppercase italic tracking-tight"
+                    >
+                        Dashboard
+                    </h1>
+                    <p class="text-gray-600 text-xs">
+                        Overview platform Netflixku
+                    </p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="text-gray-500 text-sm">Admin</span>
+                    <div
+                        class="w-9 h-9 rounded-lg bg-red-600 flex items-center justify-center font-black text-white"
+                    >
+                        A
+                    </div>
+                </div>
+            </header>
+
+            <main class="p-8">
+                <!-- Stats Grid -->
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-10"
+                >
+                    <!-- Card: Movies -->
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 bg-red-600/10 rounded-xl flex items-center justify-center"
+                            >
+                                <svg
+                                    class="w-6 h-6 text-red-500"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"
+                                    />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-black text-green-400 bg-green-400/10 px-2 py-1 rounded-full"
+                                >+12%</span
+                            >
+                        </div>
+                        <p class="text-3xl font-black text-white mb-1">142</p>
+                        <p
+                            class="text-gray-500 text-xs uppercase tracking-widest font-bold"
+                        >
+                            Total Movies
+                        </p>
+                    </div>
+                    <!-- Card: Users -->
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 bg-blue-600/10 rounded-xl flex items-center justify-center"
+                            >
+                                <svg
+                                    class="w-6 h-6 text-blue-400"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                                    />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-black text-green-400 bg-green-400/10 px-2 py-1 rounded-full"
+                                >+8%</span
+                            >
+                        </div>
+                        <p class="text-3xl font-black text-white mb-1">1,284</p>
+                        <p
+                            class="text-gray-500 text-xs uppercase tracking-widest font-bold"
+                        >
+                            Total Users
+                        </p>
+                    </div>
+                    <!-- Card: TV Channels -->
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 bg-yellow-600/10 rounded-xl flex items-center justify-center"
+                            >
+                                <svg
+                                    class="w-6 h-6 text-yellow-400"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"
+                                    />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-black text-red-400 bg-red-400/10 px-2 py-1 rounded-full"
+                                >Live</span
+                            >
+                        </div>
+                        <p class="text-3xl font-black text-white mb-1">892</p>
+                        <p
+                            class="text-gray-500 text-xs uppercase tracking-widest font-bold"
+                        >
+                            TV Channels
+                        </p>
+                    </div>
+                    <!-- Card: Radio Stations -->
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 bg-teal-600/10 rounded-xl flex items-center justify-center"
+                            >
+                                <svg
+                                    class="w-6 h-6 text-teal-400"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+                                    />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xs font-black text-green-400 bg-green-400/10 px-2 py-1 rounded-full"
+                                >+100</span
+                            >
+                        </div>
+                        <p class="text-3xl font-black text-white mb-1">100</p>
+                        <p
+                            class="text-gray-500 text-xs uppercase tracking-widest font-bold"
+                        >
+                            Radio Stations
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+                    <!-- Latest Movies -->
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2
+                                class="text-lg font-black text-white uppercase italic tracking-tight"
+                            >
+                                Film Terbaru
+                            </h2>
+                            <a
+                                href="admin-movies.html"
+                                class="text-xs font-black text-red-500 uppercase tracking-widest hover:text-red-400"
+                                >Lihat Semua →</a
+                            >
+                        </div>
+                        <div class="space-y-4">
+                            <div
+                                class="flex items-center gap-4 p-3 bg-white/3 rounded-xl"
+                            >
+                                <img
+                                    src="https://placehold.co/60x90/1a1a1a/e50914?text=M1"
+                                    class="w-12 h-16 object-cover rounded-lg"
+                                />
+                                <div class="flex-1 min-w-0">
+                                    <p
+                                        class="text-white font-bold text-sm truncate"
+                                    >
+                                        The Dark Knight
+                                    </p>
+                                    <p class="text-gray-500 text-xs">
+                                        Action • 2008
+                                    </p>
+                                </div>
+                                <span
+                                    class="text-xs font-black bg-green-400/10 text-green-400 px-2 py-1 rounded-full"
+                                    >Active</span
+                                >
+                            </div>
+                            <div
+                                class="flex items-center gap-4 p-3 bg-white/3 rounded-xl"
+                            >
+                                <img
+                                    src="https://placehold.co/60x90/1a1a1a/0055ff?text=M2"
+                                    class="w-12 h-16 object-cover rounded-lg"
+                                />
+                                <div class="flex-1 min-w-0">
+                                    <p
+                                        class="text-white font-bold text-sm truncate"
+                                    >
+                                        Inception
+                                    </p>
+                                    <p class="text-gray-500 text-xs">
+                                        Sci-Fi • 2010
+                                    </p>
+                                </div>
+                                <span
+                                    class="text-xs font-black bg-green-400/10 text-green-400 px-2 py-1 rounded-full"
+                                    >Active</span
+                                >
+                            </div>
+                            <div
+                                class="flex items-center gap-4 p-3 bg-white/3 rounded-xl"
+                            >
+                                <img
+                                    src="https://placehold.co/60x90/1a1a1a/990000?text=M3"
+                                    class="w-12 h-16 object-cover rounded-lg"
+                                />
+                                <div class="flex-1 min-w-0">
+                                    <p
+                                        class="text-white font-bold text-sm truncate"
+                                    >
+                                        Interstellar
+                                    </p>
+                                    <p class="text-gray-500 text-xs">
+                                        Sci-Fi • 2014
+                                    </p>
+                                </div>
+                                <span
+                                    class="text-xs font-black bg-yellow-400/10 text-yellow-400 px-2 py-1 rounded-full"
+                                    >Pending</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Commands -->
+                    <div class="glass-card p-6 rounded-2xl">
+                        <h2
+                            class="text-lg font-black text-white uppercase italic tracking-tight mb-6"
+                        >
+                            Artisan Commands
+                        </h2>
+                        <div class="space-y-3">
+                            <div
+                                class="flex items-center justify-between p-4 bg-white/3 rounded-xl border border-white/5"
+                            >
+                                <div>
+                                    <p
+                                        class="text-white text-sm font-bold font-mono"
+                                    >
+                                        php artisan tv:sync
+                                    </p>
+                                    <p class="text-gray-500 text-xs mt-1">
+                                        Sync TV channels from IPTV-ORG
+                                    </p>
+                                </div>
+                                <button
+                                    class="px-4 py-1.5 bg-red-600/20 text-red-400 text-xs font-black uppercase rounded-full hover:bg-red-600/30 transition"
+                                >
+                                    Run
+                                </button>
+                            </div>
+                            <div
+                                class="flex items-center justify-between p-4 bg-white/3 rounded-xl border border-white/5"
+                            >
+                                <div>
+                                    <p
+                                        class="text-white text-sm font-bold font-mono"
+                                    >
+                                        php artisan radio:sync
+                                    </p>
+                                    <p class="text-gray-500 text-xs mt-1">
+                                        Sync radio stations from Radio Browser
+                                    </p>
+                                </div>
+                                <button
+                                    class="px-4 py-1.5 bg-teal-600/20 text-teal-400 text-xs font-black uppercase rounded-full hover:bg-teal-600/30 transition"
+                                >
+                                    Run
+                                </button>
+                            </div>
+                            <div
+                                class="flex items-center justify-between p-4 bg-white/3 rounded-xl border border-white/5"
+                            >
+                                <div>
+                                    <p
+                                        class="text-white text-sm font-bold font-mono"
+                                    >
+                                        php artisan db:seed
+                                    </p>
+                                    <p class="text-gray-500 text-xs mt-1">
+                                        Seed database with sample data
+                                    </p>
+                                </div>
+                                <button
+                                    class="px-4 py-1.5 bg-blue-600/20 text-blue-400 text-xs font-black uppercase rounded-full hover:bg-blue-600/30 transition"
+                                >
+                                    Run
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <script src="js/main.js"></script>
+    </body>
+</html>

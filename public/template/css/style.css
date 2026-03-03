@@ -1,0 +1,305 @@
+/* 
+ * Netflixku Template – Main Stylesheet
+ * Uses TailwindCSS (via CDN) as a base. This file contains custom utilities.
+ */
+
+/* ── Base ─────────────────────────────────────────── */
+body {
+    font-family: "Inter", sans-serif;
+    background: #0a0a0a;
+    color: #e5e5e5;
+    min-height: 100vh;
+}
+
+/* ── Scrollbar ────────────────────────────────────── */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(229, 9, 20, 0.4);
+    border-radius: 10px;
+}
+
+/* ── Movie / Content Card ─────────────────────────── */
+.movie-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+}
+.movie-card:hover {
+    transform: scale(1.08);
+    z-index: 10;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+/* ── Gradient helpers ──────────────────────────────── */
+.gradient-overlay {
+    background: linear-gradient(to top, #0a0a0a 0%, transparent 60%);
+}
+.gradient-overlay-right {
+    background: linear-gradient(to right, #0a0a0a 0%, transparent 50%);
+}
+
+/* ── Text Effects ─────────────────────────────────── */
+.text-glow {
+    text-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+}
+
+/* ── Buttons ──────────────────────────────────────── */
+.btn-netflix {
+    background: #e50914;
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-netflix:hover {
+    background: #f6121d;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(229, 9, 20, 0.4);
+}
+
+/* ── Navigation ───────────────────────────────────── */
+.glass-nav {
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    transition: all 0.3s;
+}
+
+/* ── Glassmorphism cards ──────────────────────────── */
+.glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glass-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(229, 9, 20, 0.4);
+    transform: translateY(-8px);
+    box-shadow:
+        0 20px 40px -15px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(229, 9, 20, 0.1);
+}
+
+/* ── Teal variant (Radio) ─────────────────────────── */
+.glass-card-teal:hover {
+    border-color: rgba(20, 184, 166, 0.4);
+    box-shadow:
+        0 20px 40px -15px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(20, 184, 166, 0.1);
+}
+
+/* ── Search input ─────────────────────────────────── */
+.search-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transition: all 0.3s ease;
+}
+.search-input:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #e50914;
+    box-shadow: 0 0 15px rgba(229, 9, 20, 0.2);
+    outline: none;
+}
+
+/* ── Animations ───────────────────────────────────── */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.pulse-glow {
+    animation: pulseGlow 2s infinite;
+}
+@keyframes pulseGlow {
+    0%,
+    100% {
+        box-shadow: 0 0 5px rgba(229, 9, 20, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(229, 9, 20, 0.6);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* ── Visualizer (Radio player) ───────────────────── */
+.visualizer-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 4px;
+    height: 100px;
+}
+.bar {
+    width: 8px;
+    background: #14b8a6;
+    border-radius: 4px;
+    height: 10px;
+    transition: height 0.2s ease;
+}
+.playing .bar {
+    animation: dance 1s ease-in-out infinite alternate;
+}
+@keyframes dance {
+    0% {
+        height: 10px;
+    }
+    100% {
+        height: 80px;
+    }
+}
+.bar:nth-child(2) {
+    animation-delay: 0.1s;
+}
+.bar:nth-child(3) {
+    animation-delay: 0.2s;
+}
+.bar:nth-child(4) {
+    animation-delay: 0.3s;
+}
+.bar:nth-child(5) {
+    animation-delay: 0.4s;
+}
+.bar:nth-child(6) {
+    animation-delay: 0.5s;
+}
+.bar:nth-child(7) {
+    animation-delay: 0.6s;
+}
+.bar:nth-child(8) {
+    animation-delay: 0.7s;
+}
+
+/* ── Admin sidebar ────────────────────────────────── */
+.admin-sidebar {
+    background: #141414;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    width: 260px;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 40;
+    overflow-y: auto;
+}
+.admin-content {
+    margin-left: 260px;
+    min-height: 100vh;
+    background: #0a0a0a;
+}
+.admin-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    color: #9ca3af;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+    margin-bottom: 4px;
+}
+.admin-nav-item:hover,
+.admin-nav-item.active {
+    background: rgba(229, 9, 20, 0.1);
+    color: #e50914;
+}
+
+/* ── Live badge ───────────────────────────────────── */
+.live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(229, 9, 20, 0.1);
+    border: 1px solid rgba(229, 9, 20, 0.2);
+    color: #e50914;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    padding: 4px 12px;
+    border-radius: 9999px;
+}
+.live-dot {
+    width: 6px;
+    height: 6px;
+    background: #e50914;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+/* ── Panel slide ──────────────────────────────────── */
+.side-panel {
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(30px);
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 450px;
+    max-width: 100%;
+    z-index: 100;
+    transform: translateX(100%);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.side-panel.active {
+    transform: translateX(0);
+}
+
+/* ── Badge Chips ──────────────────────────────────── */
+.category-badge {
+    display: inline-block;
+    background: rgba(229, 9, 20, 0.1);
+    color: #e50914;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    border: 1px solid rgba(229, 9, 20, 0.2);
+}

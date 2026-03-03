@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Netflixku – Login</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="css/style.css" />
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            netflix: {
+                                red: "#E50914",
+                                dark: "#141414",
+                                darker: "#0a0a0a",
+                                gray: "#1a1a1a",
+                                light: "#e5e5e5",
+                            },
+                        },
+                    },
+                },
+            };
+        </script>
+    </head>
+    <body
+        class="min-h-screen flex items-center justify-center relative overflow-hidden"
+    >
+        <!-- Background -->
+        <div
+            class="absolute inset-0 bg-gradient-to-br from-red-950/30 via-black to-black"
+        >
+            <div
+                class="absolute inset-0 bg-[url('https://placehold.co/1920x1080/0a0a0a/1a1a1a?text=+')]"
+            ></div>
+        </div>
+        <!-- Glows -->
+        <div
+            class="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-red-900/20 rounded-full blur-[150px] pointer-events-none"
+        ></div>
+        <div
+            class="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-red-900/10 rounded-full blur-[150px] pointer-events-none"
+        ></div>
+
+        <div class="relative z-10 w-full max-w-md mx-auto px-4">
+            <!-- Logo -->
+            <div class="text-center mb-10">
+                <a
+                    href="index.html"
+                    class="text-red-600 font-black text-4xl tracking-wider text-glow"
+                    >NETFLIXKU</a
+                >
+            </div>
+
+            <!-- Card -->
+            <div class="glass-card p-8 md:p-10 rounded-3xl">
+                <h1
+                    class="text-3xl font-black text-white uppercase italic tracking-tighter mb-2"
+                >
+                    Masuk
+                </h1>
+                <p class="text-gray-500 text-sm mb-8">
+                    Selamat datang kembali. Masuk untuk melanjutkan menonton.
+                </p>
+
+                <form action="#" method="POST" class="space-y-5">
+                    <!-- Email -->
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2"
+                            >Email</label
+                        >
+                        <input
+                            type="email"
+                            placeholder="email@example.com"
+                            class="w-full search-input py-3.5 px-5 rounded-xl text-white placeholder-gray-600 text-sm"
+                        />
+                    </div>
+                    <!-- Password -->
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2"
+                            >Password</label
+                        >
+                        <input
+                            type="password"
+                            placeholder="••••••••"
+                            class="w-full search-input py-3.5 px-5 rounded-xl text-white placeholder-gray-600 text-sm"
+                        />
+                    </div>
+                    <!-- Remember -->
+                    <div class="flex items-center justify-between">
+                        <label
+                            class="flex items-center gap-2 cursor-pointer group"
+                        >
+                            <input
+                                type="checkbox"
+                                class="w-4 h-4 rounded border border-white/20 bg-white/5 text-red-600 cursor-pointer accent-red-600"
+                            />
+                            <span
+                                class="text-gray-400 text-sm group-hover:text-white transition"
+                                >Ingat saya</span
+                            >
+                        </label>
+                        <a
+                            href="#"
+                            class="text-gray-400 text-sm hover:text-white transition underline"
+                            >Lupa password?</a
+                        >
+                    </div>
+                    <!-- Submit -->
+                    <button
+                        type="submit"
+                        class="w-full btn-netflix py-3.5 rounded-xl text-sm font-black uppercase tracking-widest"
+                    >
+                        Masuk
+                    </button>
+                </form>
+
+                <!-- Divider -->
+                <div class="flex items-center gap-3 my-6">
+                    <div class="flex-1 h-px bg-white/10"></div>
+                    <span class="text-gray-500 text-xs">ATAU</span>
+                    <div class="flex-1 h-px bg-white/10"></div>
+                </div>
+
+                <p class="text-center text-gray-400 text-sm">
+                    Belum punya akun?
+                    <a
+                        href="register.html"
+                        class="text-red-500 hover:text-red-400 font-bold transition"
+                        >Daftar sekarang</a
+                    >
+                </p>
+            </div>
+        </div>
+    </body>
+</html>

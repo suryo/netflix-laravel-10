@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Netflixku – TV Series</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="css/style.css" />
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            netflix: {
+                                red: "#E50914",
+                                dark: "#141414",
+                                darker: "#0a0a0a",
+                                gray: "#1a1a1a",
+                                light: "#e5e5e5",
+                            },
+                        },
+                    },
+                },
+            };
+        </script>
+    </head>
+    <body class="min-h-screen">
+        <nav class="glass-nav" id="navbar">
+            <div
+                class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16"
+            >
+                <a
+                    href="index.html"
+                    class="text-red-600 font-black text-2xl tracking-wider"
+                    >NETFLIXKU</a
+                >
+                <div class="hidden md:flex items-center space-x-6">
+                    <a
+                        href="index.html"
+                        class="text-sm text-gray-300 hover:text-white"
+                        >Home</a
+                    >
+                    <a
+                        href="movies.html"
+                        class="text-sm text-gray-300 hover:text-white"
+                        >Movies</a
+                    >
+                    <a
+                        href="tv-series.html"
+                        class="text-sm font-bold text-white"
+                        >Tv Series</a
+                    >
+                    <a
+                        href="tv-online.html"
+                        class="text-sm text-gray-300 hover:text-white"
+                        >TV Online</a
+                    >
+                    <a
+                        href="radio-online.html"
+                        class="text-sm text-gray-300 hover:text-white"
+                        >Radio Online</a
+                    >
+                </div>
+                <a
+                    href="login.html"
+                    class="btn-netflix px-4 py-2 text-white text-xs font-bold rounded-md"
+                    >Sign In</a
+                >
+            </div>
+        </nav>
+
+        <main class="pt-28 pb-20 px-4 md:px-12">
+            <div class="max-w-7xl mx-auto mb-12">
+                <h1
+                    class="text-4xl md:text-5xl font-black text-white uppercase italic tracking-tighter mb-3"
+                >
+                    TV <span class="text-red-600">Series</span>
+                </h1>
+                <p class="text-gray-400">
+                    Saksikan serial unggulan dari berbagai genre terpopuler.
+                </p>
+            </div>
+
+            <div
+                class="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5"
+            >
+                <!-- TV Series cards with episode info -->
+                <a href="movie-detail.html" class="movie-card relative group">
+                    <img
+                        src="https://placehold.co/300x450/1a1a1a/e50914?text=Series+1"
+                        class="w-full aspect-[2/3] object-cover rounded-lg"
+                    />
+                    <div
+                        class="absolute bottom-0 left-0 right-0 p-3 gradient-overlay rounded-b-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                        <p
+                            class="text-white text-xs font-black uppercase italic"
+                        >
+                            Breaking Bad
+                        </p>
+                        <p class="text-gray-400 text-[10px]">
+                            5 Seasons • 62 Episodes
+                        </p>
+                    </div>
+                </a>
+                <a href="movie-detail.html" class="movie-card relative group">
+                    <img
+                        src="https://placehold.co/300x450/1a1a1a/0055ff?text=Series+2"
+                        class="w-full aspect-[2/3] object-cover rounded-lg"
+                    />
+                    <div
+                        class="absolute bottom-0 left-0 right-0 p-3 gradient-overlay rounded-b-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                        <p
+                            class="text-white text-xs font-black uppercase italic"
+                        >
+                            Game of Thrones
+                        </p>
+                        <p class="text-gray-400 text-[10px]">
+                            8 Seasons • 73 Episodes
+                        </p>
+                    </div>
+                </a>
+                <a href="movie-detail.html" class="movie-card relative group">
+                    <img
+                        src="https://placehold.co/300x450/1a1a1a/009900?text=Series+3"
+                        class="w-full aspect-[2/3] object-cover rounded-lg"
+                    />
+                </a>
+                <a href="movie-detail.html" class="movie-card relative group">
+                    <img
+                        src="https://placehold.co/300x450/1a1a1a/cc00cc?text=Series+4"
+                        class="w-full aspect-[2/3] object-cover rounded-lg"
+                    />
+                </a>
+                <a href="movie-detail.html" class="movie-card relative group">
+                    <img
+                        src="https://placehold.co/300x450/1a1a1a/ff6600?text=Series+5"
+                        class="w-full aspect-[2/3] object-cover rounded-lg"
+                    />
+                </a>
+                <a href="movie-detail.html" class="movie-card relative group">
+                    <img
+                        src="https://placehold.co/300x450/111111/006699?text=Series+6"
+                        class="w-full aspect-[2/3] object-cover rounded-lg"
+                    />
+                </a>
+            </div>
+        </main>
+
+        <script src="js/main.js"></script>
+    </body>
+</html>

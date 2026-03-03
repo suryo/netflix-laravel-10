@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Netflixku – TV Online Player</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="css/style.css" />
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            netflix: {
+                                red: "#E50914",
+                                dark: "#141414",
+                                darker: "#0a0a0a",
+                                gray: "#1a1a1a",
+                                light: "#e5e5e5",
+                            },
+                        },
+                    },
+                },
+            };
+        </script>
+    </head>
+    <body class="min-h-screen">
+        <nav class="glass-nav" id="navbar">
+            <div
+                class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16"
+            >
+                <a
+                    href="index.html"
+                    class="text-red-600 font-black text-2xl tracking-wider"
+                    >NETFLIXKU</a
+                >
+                <a
+                    href="tv-online.html"
+                    class="text-sm text-gray-300 hover:text-white"
+                    >&larr; TV Hub</a
+                >
+            </div>
+        </nav>
+
+        <main class="pt-16">
+            <!-- Player -->
+            <div class="relative w-full bg-black" style="padding-top: 56.25%">
+                <div
+                    class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 to-black"
+                >
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 border-4 border-red-500 border-t-transparent rounded-full animate-spin mx-auto mb-6"
+                        ></div>
+                        <p
+                            class="text-gray-400 text-sm uppercase tracking-widest font-bold"
+                        >
+                            HLS / Video Stream Loading...
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Channel Info -->
+            <div class="max-w-7xl mx-auto px-4 md:px-12 py-12">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                    <!-- Info -->
+                    <div class="lg:col-span-8">
+                        <div class="flex items-center gap-6 mb-8">
+                            <div
+                                class="w-24 h-24 bg-black rounded-2xl p-4 border border-white/10 flex items-center justify-center"
+                            >
+                                <span class="text-5xl">📺</span>
+                            </div>
+                            <div>
+                                <div class="live-badge mb-3">
+                                    <span class="live-dot"></span>Sedang Siaran
+                                </div>
+                                <h1
+                                    class="text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter"
+                                >
+                                    Metro TV
+                                </h1>
+                                <div class="flex gap-2 mt-3">
+                                    <span class="category-badge">News</span>
+                                    <span
+                                        class="category-badge"
+                                        style="
+                                            background: rgba(0, 120, 255, 0.1);
+                                            color: #60a5fa;
+                                            border-color: rgba(
+                                                0,
+                                                120,
+                                                255,
+                                                0.2
+                                            );
+                                        "
+                                        >ID</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Description -->
+                        <div class="mb-8">
+                            <h2
+                                class="text-lg font-black text-white uppercase italic tracking-tighter mb-3 flex items-center gap-3"
+                            >
+                                <span
+                                    class="w-1 h-5 bg-red-600 rounded-full"
+                                ></span
+                                >Tentang Channel
+                            </h2>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Metro TV adalah stasiun televisi berita 24 jam
+                                pertama di Indonesia yang menyiarkan program
+                                berita, wawancara, dan dokumentari.
+                            </p>
+                        </div>
+                        <!-- Share -->
+                        <button
+                            onclick="copyToClipboard()"
+                            class="flex items-center gap-3 px-8 py-3 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-full font-black text-sm uppercase tracking-widest transition-all"
+                        >
+                            <svg
+                                class="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                                />
+                            </svg>
+                            Bagikan
+                        </button>
+
+                        <!-- CORS Error Fallback (static demo) -->
+                        <div
+                            class="mt-8 p-6 bg-red-500/10 border border-red-500/20 rounded-3xl text-center"
+                        >
+                            <div
+                                class="flex items-center justify-center gap-3 mb-4"
+                            >
+                                <svg
+                                    class="w-6 h-6 text-red-500"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                                    />
+                                </svg>
+                                <h3
+                                    class="text-white font-black uppercase text-sm italic"
+                                >
+                                    Siaran Tidak Dapat Dimuat
+                                </h3>
+                            </div>
+                            <p class="text-gray-400 text-xs mb-6">
+                                Penyiar membatasi stream ini di browser (CORS).
+                                Gunakan pemutar eksternal untuk menonton.
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-3">
+                                <button
+                                    onclick="location.reload()"
+                                    class="px-6 py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-black uppercase tracking-widest rounded-full transition-all flex items-center gap-2"
+                                >
+                                    🔄 Coba Lagi
+                                </button>
+                                <a
+                                    href="tv-online.html"
+                                    class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-black uppercase tracking-widest rounded-full transition-all"
+                                    >📺 Pilih Channel Lain</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="lg:col-span-4">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span
+                                class="w-6 h-1 bg-red-600 rounded-full"
+                            ></span>
+                            <h2
+                                class="text-lg font-black text-white uppercase italic"
+                            >
+                                Stasiun TV Populer
+                            </h2>
+                        </div>
+                        <div class="space-y-4">
+                            <a
+                                href="tv-player.html"
+                                class="flex items-center gap-4 p-4 glass-card rounded-2xl group"
+                            >
+                                <div
+                                    class="w-14 h-14 bg-black rounded-xl flex items-center justify-center border border-white/10"
+                                >
+                                    📺
+                                </div>
+                                <div>
+                                    <p
+                                        class="text-white text-sm font-black group-hover:text-red-500 transition uppercase italic"
+                                    >
+                                        ABC News Live
+                                    </p>
+                                    <div class="live-badge mt-1 text-[9px]">
+                                        <span class="live-dot"></span>Live Now
+                                    </div>
+                                </div>
+                            </a>
+                            <a
+                                href="tv-player.html"
+                                class="flex items-center gap-4 p-4 glass-card rounded-2xl group"
+                            >
+                                <div
+                                    class="w-14 h-14 bg-black rounded-xl flex items-center justify-center border border-white/10"
+                                >
+                                    📺
+                                </div>
+                                <div>
+                                    <p
+                                        class="text-white text-sm font-black group-hover:text-red-500 transition uppercase italic"
+                                    >
+                                        Sky News
+                                    </p>
+                                    <div class="live-badge mt-1 text-[9px]">
+                                        <span class="live-dot"></span>Live Now
+                                    </div>
+                                </div>
+                            </a>
+                            <a
+                                href="tv-player.html"
+                                class="flex items-center gap-4 p-4 glass-card rounded-2xl group"
+                            >
+                                <div
+                                    class="w-14 h-14 bg-black rounded-xl flex items-center justify-center border border-white/10"
+                                >
+                                    📺
+                                </div>
+                                <div>
+                                    <p
+                                        class="text-white text-sm font-black group-hover:text-red-500 transition uppercase italic"
+                                    >
+                                        Kompas TV
+                                    </p>
+                                    <div class="live-badge mt-1 text-[9px]">
+                                        <span class="live-dot"></span>Live Now
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <script src="js/main.js"></script>
+    </body>
+</html>

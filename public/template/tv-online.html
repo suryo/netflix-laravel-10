@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Netflixku – TV Online Global Hub</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="css/style.css" />
+        <script
+            defer
+            src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+        ></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            netflix: {
+                                red: "#E50914",
+                                dark: "#141414",
+                                darker: "#0a0a0a",
+                                gray: "#1a1a1a",
+                                light: "#e5e5e5",
+                            },
+                        },
+                    },
+                },
+            };
+        </script>
+        <style>
+            .country-card {
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                cursor: pointer;
+            }
+            .country-card:hover {
+                background: rgba(255, 255, 255, 0.08);
+                border-color: rgba(229, 9, 20, 0.4);
+                transform: translateY(-8px);
+                box-shadow:
+                    0 20px 40px -15px rgba(0, 0, 0, 0.5),
+                    0 0 20px rgba(229, 9, 20, 0.1);
+            }
+            .flag-emoji {
+                transition: transform 0.4s ease;
+                display: inline-block;
+            }
+            .country-card:hover .flag-emoji {
+                transform: scale(1.2) rotate(5deg);
+            }
+            [x-cloak] {
+                display: none !important;
+            }
+        </style>
+    </head>
+    <body class="min-h-screen">
+        <nav class="glass-nav" id="navbar">
+            <div
+                class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16"
+            >
+                <a
+                    href="index.html"
+                    class="text-red-600 font-black text-2xl tracking-wider"
+                    >NETFLIXKU</a
+                >
+                <div class="hidden md:flex items-center space-x-6">
+                    <a
+                        href="index.html"
+                        class="text-sm text-gray-300 hover:text-white"
+                        >Home</a
+                    >
+                    <a
+                        href="movies.html"
+                        class="text-sm text-gray-300 hover:text-white"
+                        >Movies</a
+                    >
+                    <a
+                        href="tv-online.html"
+                        class="text-sm font-bold text-white"
+                        >TV Online</a
+                    >
+                    <a
+                        href="radio-online.html"
+                        class="text-sm text-gray-300 hover:text-white"
+                        >Radio Online</a
+                    >
+                </div>
+                <a
+                    href="login.html"
+                    class="btn-netflix px-4 py-2 text-white text-xs font-bold rounded-md"
+                    >Sign In</a
+                >
+            </div>
+        </nav>
+
+        <!-- City/Country Hub -->
+        <div class="pt-28 pb-20 px-4 md:px-12 min-h-screen">
+            <!-- Header -->
+            <div class="max-w-7xl mx-auto mb-16 text-center">
+                <h1
+                    class="text-5xl md:text-7xl font-black text-white mb-6 tracking-tighter uppercase italic"
+                >
+                    TV
+                    <span
+                        class="text-red-600 underline decoration-4 underline-offset-8"
+                        >GLOBAL</span
+                    >
+                    HUB
+                </h1>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto mb-10">
+                    Temukan stasiun TV dari seluruh dunia. Pilih negara untuk
+                    mulai menonton siaran langsung.
+                </p>
+                <!-- Search -->
+                <div class="max-w-xl mx-auto relative group">
+                    <div
+                        class="absolute -inset-1 bg-gradient-to-r from-red-700 to-red-900 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000"
+                    ></div>
+                    <div class="relative flex items-center">
+                        <input
+                            type="text"
+                            id="countrySearch"
+                            placeholder="Cari negara..."
+                            oninput="filterCountries()"
+                            class="w-full search-input py-5 px-8 rounded-full text-white text-lg placeholder-gray-500 font-medium shadow-2xl"
+                        />
+                        <div class="absolute right-6 pointer-events-none">
+                            <svg
+                                class="w-6 h-6 text-gray-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Country Grid -->
+            <div class="max-w-7xl mx-auto">
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+                    id="countryGrid"
+                >
+                    <!-- Country Card Template -->
+                    <div
+                        data-name="indonesia"
+                        class="country-card p-10 rounded-3xl group"
+                        onclick="openChannelPanel('Indonesia 🇮🇩')"
+                    >
+                        <div class="flex flex-col items-center text-center">
+                            <span
+                                class="flag-emoji text-7xl mb-8 filter drop-shadow-2xl"
+                                >🇮🇩</span
+                            >
+                            <h3
+                                class="text-2xl font-black text-white mb-3 group-hover:text-red-500 transition-colors"
+                            >
+                                Indonesia
+                            </h3>
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"
+                                ></span>
+                                <span
+                                    class="text-xs font-black text-gray-500 uppercase tracking-[0.2em]"
+                                    >45 Channels</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        data-name="united states"
+                        class="country-card p-10 rounded-3xl group"
+                        onclick="openChannelPanel('United States 🇺🇸')"
+                    >
+                        <div class="flex flex-col items-center text-center">
+                            <span
+                                class="flag-emoji text-7xl mb-8 filter drop-shadow-2xl"
+                                >🇺🇸</span
+                            >
+                            <h3
+                                class="text-2xl font-black text-white mb-3 group-hover:text-red-500 transition-colors"
+                            >
+                                United States
+                            </h3>
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"
+                                ></span>
+                                <span
+                                    class="text-xs font-black text-gray-500 uppercase tracking-[0.2em]"
+                                    >78 Channels</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        data-name="united kingdom"
+                        class="country-card p-10 rounded-3xl group"
+                        onclick="openChannelPanel('United Kingdom 🇬🇧')"
+                    >
+                        <div class="flex flex-col items-center text-center">
+                            <span class="flag-emoji text-7xl mb-8">🇬🇧</span>
+                            <h3
+                                class="text-2xl font-black text-white mb-3 group-hover:text-red-500 transition-colors"
+                            >
+                                United Kingdom
+                            </h3>
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"
+                                ></span>
+                                <span
+                                    class="text-xs font-black text-gray-500 uppercase tracking-[0.2em]"
+                                    >50 Channels</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        data-name="japan"
+                        class="country-card p-10 rounded-3xl group"
+                        onclick="openChannelPanel('Japan 🇯🇵')"
+                    >
+                        <div class="flex flex-col items-center text-center">
+                            <span class="flag-emoji text-7xl mb-8">🇯🇵</span>
+                            <h3
+                                class="text-2xl font-black text-white mb-3 group-hover:text-red-500 transition-colors"
+                            >
+                                Japan
+                            </h3>
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"
+                                ></span>
+                                <span
+                                    class="text-xs font-black text-gray-500 uppercase tracking-[0.2em]"
+                                    >38 Channels</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        data-name="south korea"
+                        class="country-card p-10 rounded-3xl group"
+                        onclick="openChannelPanel('South Korea 🇰🇷')"
+                    >
+                        <div class="flex flex-col items-center text-center">
+                            <span class="flag-emoji text-7xl mb-8">🇰🇷</span>
+                            <h3
+                                class="text-2xl font-black text-white mb-3 group-hover:text-red-500 transition-colors"
+                            >
+                                South Korea
+                            </h3>
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"
+                                ></span>
+                                <span
+                                    class="text-xs font-black text-gray-500 uppercase tracking-[0.2em]"
+                                    >22 Channels</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        data-name="australia"
+                        class="country-card p-10 rounded-3xl group"
+                        onclick="openChannelPanel('Australia 🇦🇺')"
+                    >
+                        <div class="flex flex-col items-center text-center">
+                            <span class="flag-emoji text-7xl mb-8">🇦🇺</span>
+                            <h3
+                                class="text-2xl font-black text-white mb-3 group-hover:text-red-500 transition-colors"
+                            >
+                                Australia
+                            </h3>
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"
+                                ></span>
+                                <span
+                                    class="text-xs font-black text-gray-500 uppercase tracking-[0.2em]"
+                                    >18 Channels</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        data-name="malaysia"
+                        class="country-card p-10 rounded-3xl group"
+                        onclick="openChannelPanel('Malaysia 🇲🇾')"
+                    >
+                        <div class="flex flex-col items-center text-center">
+                            <span class="flag-emoji text-7xl mb-8">🇲🇾</span>
+                            <h3
+                                class="text-2xl font-black text-white mb-3 group-hover:text-red-500 transition-colors"
+                            >
+                                Malaysia
+                            </h3>
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"
+                                ></span>
+                                <span
+                                    class="text-xs font-black text-gray-500 uppercase tracking-[0.2em]"
+                                    >15 Channels</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        data-name="india"
+                        class="country-card p-10 rounded-3xl group"
+                        onclick="openChannelPanel('India 🇮🇳')"
+                    >
+                        <div class="flex flex-col items-center text-center">
+                            <span class="flag-emoji text-7xl mb-8">🇮🇳</span>
+                            <h3
+                                class="text-2xl font-black text-white mb-3 group-hover:text-red-500 transition-colors"
+                            >
+                                India
+                            </h3>
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"
+                                ></span>
+                                <span
+                                    class="text-xs font-black text-gray-500 uppercase tracking-[0.2em]"
+                                    >60 Channels</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side Panel (Channels) -->
+            <div id="channelPanel" class="side-panel shadow-2xl">
+                <div
+                    class="p-8 border-b border-white/5 bg-black/40 flex items-center justify-between"
+                >
+                    <div>
+                        <h2
+                            class="text-3xl font-black text-white tracking-tighter uppercase italic"
+                            id="panelTitle"
+                        >
+                            Channels
+                        </h2>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span
+                                class="w-2 h-2 bg-red-500 rounded-full animate-pulse"
+                            ></span>
+                            <span
+                                class="text-[10px] font-black text-red-500 uppercase tracking-[0.3em]"
+                                >Live Feed</span
+                            >
+                        </div>
+                    </div>
+                    <button
+                        onclick="closeChannelPanel()"
+                        class="p-3 hover:bg-white/10 rounded-full transition-all hover:rotate-90"
+                    >
+                        <svg
+                            class="w-8 h-8 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"
+                            />
+                        </svg>
+                    </button>
+                </div>
+                <div
+                    class="flex-1 overflow-y-auto p-8 custom-scrollbar space-y-5"
+                >
+                    <!-- Sample Channels in Panel -->
+                    <a
+                        href="tv-player.html"
+                        class="flex items-center gap-6 p-6 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-red-500/50 transition-all group scale-95 hover:scale-100 duration-300"
+                    >
+                        <div
+                            class="w-20 h-20 bg-black rounded-xl p-4 flex items-center justify-center border border-white/10 flex-shrink-0"
+                        >
+                            <span class="text-4xl">📺</span>
+                        </div>
+                        <div class="flex-1">
+                            <h4
+                                class="text-white font-black text-lg group-hover:text-red-500 transition"
+                            >
+                                Metro TV
+                            </h4>
+                            <p
+                                class="text-xs text-gray-500 uppercase tracking-wider mb-2"
+                            >
+                                News • ID
+                            </p>
+                            <div class="live-badge">
+                                <span class="live-dot"></span>Live Now
+                            </div>
+                        </div>
+                    </a>
+                    <a
+                        href="tv-player.html"
+                        class="flex items-center gap-6 p-6 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-red-500/50 transition-all group scale-95 hover:scale-100 duration-300"
+                    >
+                        <div
+                            class="w-20 h-20 bg-black rounded-xl p-4 flex items-center justify-center border border-white/10 flex-shrink-0"
+                        >
+                            <span class="text-4xl">📺</span>
+                        </div>
+                        <div class="flex-1">
+                            <h4
+                                class="text-white font-black text-lg group-hover:text-red-500 transition"
+                            >
+                                SCTV
+                            </h4>
+                            <p
+                                class="text-xs text-gray-500 uppercase tracking-wider mb-2"
+                            >
+                                General • ID
+                            </p>
+                            <div class="live-badge">
+                                <span class="live-dot"></span>Live Now
+                            </div>
+                        </div>
+                    </a>
+                    <a
+                        href="tv-player.html"
+                        class="flex items-center gap-6 p-6 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-red-500/50 transition-all group scale-95 hover:scale-100 duration-300"
+                    >
+                        <div
+                            class="w-20 h-20 bg-black rounded-xl p-4 flex items-center justify-center border border-white/10 flex-shrink-0"
+                        >
+                            <span class="text-4xl">📺</span>
+                        </div>
+                        <div class="flex-1">
+                            <h4
+                                class="text-white font-black text-lg group-hover:text-red-500 transition"
+                            >
+                                Trans7
+                            </h4>
+                            <p
+                                class="text-xs text-gray-500 uppercase tracking-wider mb-2"
+                            >
+                                Entertainment • ID
+                            </p>
+                            <div class="live-badge">
+                                <span class="live-dot"></span>Live Now
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- BG Glow -->
+            <div
+                class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 overflow-hidden opacity-30"
+            >
+                <div
+                    class="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-red-900/20 rounded-full blur-[150px]"
+                ></div>
+                <div
+                    class="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-red-900/20 rounded-full blur-[150px]"
+                ></div>
+            </div>
+        </div>
+
+        <script src="js/main.js"></script>
+        <script>
+            function filterCountries() {
+                const term = document
+                    .getElementById("countrySearch")
+                    .value.toLowerCase();
+                document
+                    .querySelectorAll("#countryGrid > div[data-name]")
+                    .forEach((el) => {
+                        el.style.display = el.dataset.name.includes(term)
+                            ? ""
+                            : "none";
+                    });
+            }
+            function openChannelPanel(title) {
+                document.getElementById("panelTitle").textContent = title;
+                document.getElementById("channelPanel").classList.add("active");
+            }
+            function closeChannelPanel() {
+                document
+                    .getElementById("channelPanel")
+                    .classList.remove("active");
+            }
+        </script>
+    </body>
+</html>
